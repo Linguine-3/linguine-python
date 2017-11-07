@@ -10,6 +10,8 @@ from linguine.ops.remove_caps import RemoveCapsPreserveNNP
 from linguine.ops.remove_punct import RemovePunct
 from linguine.ops.remove_silent_pauses import RemoveSilence
 from linguine.ops.remove_stopwords import RemoveStopwords
+from linguine.ops.remove_hashtags import RemoveHashtags
+from linguine.ops.remove_quotes import RemoveQuotes
 from linguine.ops.sentence_tokenize import SentenceTokenize
 from linguine.ops.stem import StemmerPorter
 from linguine.ops.topic_model import TopicModel
@@ -38,6 +40,10 @@ def get_operation_handler(operation):
         return RemoveStopwords()
     elif operation == 'sentence_tokenize':
         return SentenceTokenize()
+    elif operation == 'removehashtags':
+        return RemoveHashtags()
+    elif operation == 'removequotes':
+        return RemoveQuotes()
     elif operation == 'stem_porter':
         return StemmerPorter()
     elif operation == 'stop_words':
