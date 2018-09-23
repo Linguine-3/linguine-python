@@ -6,3 +6,4 @@ pymongo==2.7.2
 gensim==0.10.3
 SPLAT-library==0.4.0
 psutil
+matplotlib
