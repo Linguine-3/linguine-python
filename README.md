@@ -46,7 +46,7 @@ class FooOp:
 ## API
 
 - `HTTP POST '/':` It expects a JSON payload in the provided format.
-```json
+```javascript
 {
 	"corpora_ids": ["12345"], //Collection of corpora to pipe into analysis
 	"cleanup": ["stopwords"], //Cleanup steps to add
