@@ -22,6 +22,7 @@ from linguine.ops.StanfordCoreNLP import StanfordCoreNLP
 from linguine.ops.splat import SplatDisfluency, SplatNGrams, \
         SplatComplexity, SplatPOSFrequencies, SplatSyllables, \
         SplatPronouns
+from linguine.ops.char_ngrams import CharNgrams
 
 def get_operation_handler(operation):
     if operation == 'lemmatize_wordnet':
@@ -94,6 +95,8 @@ def get_operation_handler(operation):
     elif operation == 'splat-pronouns':
         print("YOU GOT SPLATTED")
         return SplatPronouns()
+    elif operation == 'char-ngrams':
+        return CharNgrams()
     elif operation == 'noop':
         return NoOp()
     else:
