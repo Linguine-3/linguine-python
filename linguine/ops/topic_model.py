@@ -56,8 +56,8 @@ class TopicModel:
     """
     def assemble_topics(self, lda_model):
         topics = dict()
-        for n,topic in enumerate(lda_model.show_topics(formatted=False)):
+        for n,topic in lda_model.show_topics(formatted=False):
             topics[str(n)] = list()
-            for prob, word in topic:
+            for word, prob in topic:
                 topics[str(n)].append({'probability': prob, 'word': word})
         return topics

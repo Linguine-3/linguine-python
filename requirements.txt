@@ -3,7 +3,7 @@ tornado==4.3
 nltk==3.0.0
 textblob==0.9.0
 pymongo==2.7.2
-gensim==0.10.3
+gensim==0.13.4.1
 SPLAT-library==0.4.0
 psutil
 matplotlib
