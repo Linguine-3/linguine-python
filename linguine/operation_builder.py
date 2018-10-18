@@ -23,6 +23,7 @@ from linguine.ops.splat import SplatDisfluency, SplatNGrams, \
         SplatComplexity, SplatPOSFrequencies, SplatSyllables, \
         SplatPronouns
 from linguine.ops.char_ngrams import CharNgrams
+from linguine.ops.length_statistics import LengthStatistics
 
 def get_operation_handler(operation):
     if operation == 'lemmatize_wordnet':
@@ -97,6 +98,8 @@ def get_operation_handler(operation):
         return SplatPronouns()
     elif operation == 'char-ngrams':
         return CharNgrams()
+    elif operation == 'length-stats':
+        return LengthStatistics()
     elif operation == 'noop':
         return NoOp()
     else:
