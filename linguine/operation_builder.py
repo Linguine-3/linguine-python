@@ -100,6 +100,8 @@ def get_operation_handler(operation):
         return CharNgrams()
     elif operation == 'length-stats':
         return LengthStatistics()
+    elif operation == 'topic-model':
+        return LengthStatistics()
     elif operation == 'noop':
         return NoOp()
     else:

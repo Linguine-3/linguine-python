@@ -1,7 +1,9 @@
+import json
 import unittest
-import sys
 
+from linguine.corpus import Corpus
 from linguine.ops.topic_model import TopicModel
+
 
 class TopicModelTest(unittest.TestCase):
 
@@ -9,10 +11,11 @@ class TopicModelTest(unittest.TestCase):
         self.op = TopicModel()
 
     def test_run(self):
-        self.op = TopicModel()
-        self.test_data = [line.strip() for line in open('brown.txt','r')]
-        self.test_data = [[w for w in d.lower().split() ] for d in self.test_data]
-        self.assertIsNotNone(self.op.test_run(self.test_data))
+        test_data = [Corpus(str(num), "", line) for num, line in enumerate(open('brown.txt', 'r'))]
+        test_data = test_data[:100]
+        results = self.op.run(test_data)
+        results = json.loads(results)
+        self.assertIsNotNone(results)
 
 
 if __name__ == '__main__':
