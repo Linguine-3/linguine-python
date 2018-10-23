@@ -24,6 +24,7 @@ from linguine.ops.splat import SplatDisfluency, SplatNGrams, \
         SplatPronouns
 from linguine.ops.char_ngrams import CharNgrams
 from linguine.ops.length_statistics import LengthStatistics
+from linguine.ops.word_vector import WordVector
 
 def get_operation_handler(operation):
     if operation == 'lemmatize_wordnet':
@@ -102,6 +103,8 @@ def get_operation_handler(operation):
         return LengthStatistics()
     elif operation == 'topic-model':
         return LengthStatistics()
+    elif operation == 'word-vector':
+        return WordVector()
     elif operation == 'noop':
         return NoOp()
     else:
