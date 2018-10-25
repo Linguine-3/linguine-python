@@ -37,24 +37,19 @@ class TopicModel:
 
     def execute(self, data, num_topics=30, passes=10):
         wordlists = [corpus.contents.lower().split() for corpus in data]
-        print(wordlists)
 
         stoplist = stopwords.words('english')
 
         dictionary = Dictionary(wordlists)
-        print(dictionary)
 
         # Remove stop words
         stop_ids = [dictionary.token2id[stopword] for stopword in stoplist if stopword in dictionary.token2id]
         # once_ids = [token_id for token_id, doc_freq in dictionary.dfs.items() if doc_freq == 1]
         dictionary.filter_tokens(stop_ids)
         dictionary.compactify()
-        print(dictionary)
 
         # dictionary.filter_extremes(no_above=0.5)
-        print(dictionary)
         bags_of_words = [dictionary.doc2bow(t) for t in wordlists]
-        print(bags_of_words)
 
         # This can take a while to run:
         lda = LdaModel(bags_of_words, id2word=dictionary, num_topics=num_topics, passes=passes)

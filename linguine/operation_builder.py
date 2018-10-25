@@ -53,8 +53,6 @@ def get_operation_handler(operation):
         return RemoveStopwords()
     elif operation == 'tfidf':
         return Tfidf()
-    elif operation == 'topic_model':
-        return TopicModel()
     elif operation == 'wordcloudop':
         return WordCloudOp()
     elif operation == 'word_tokenize_treebank':
@@ -102,7 +100,7 @@ def get_operation_handler(operation):
     elif operation == 'length-stats':
         return LengthStatistics()
     elif operation == 'topic-model':
-        return LengthStatistics()
+        return TopicModel()
     elif operation == 'word-vector':
         return WordVector()
     elif operation == 'noop':
