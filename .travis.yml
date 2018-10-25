@@ -5,6 +5,7 @@ matrix:
     - python: 3.4
 
 before_install:
+ - export BOTO_CONFIG=/dev/null
  - travis_retry wget https://bootstrap.pypa.io/get-pip.py
  - python get-pip.py
  - pip install -r requirements.txt
