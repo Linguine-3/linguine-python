@@ -16,6 +16,7 @@ class TopicModelTest(unittest.TestCase):
         results = self.op.run(test_data)
         results = json.loads(results)
         self.assertIsNotNone(results)
+        # TODO: Add better verification
 
 
 if __name__ == '__main__':

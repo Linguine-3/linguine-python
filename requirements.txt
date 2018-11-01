@@ -7,3 +7,4 @@ gensim==0.12.3
 SPLAT-library==0.4.0
 psutil
 matplotlib
+linguistica==5.2.1
