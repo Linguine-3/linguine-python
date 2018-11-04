@@ -1,4 +1,5 @@
 import json
+import random
 
 import linguistica as lxa
 
@@ -17,5 +18,5 @@ class UnsupervisedMorphology:
     def output_to_results(self, sigs_to_stems):
         results = []
         for sig, stems in sorted(sigs_to_stems.items(), key=lambda x: len(x[1]), reverse=True):
-            results.append({"affixes": list(sig), "roots": list(stems)})
+            results.append({"affixes": list(sig), "roots": sorted(random.sample(stems, min(15, len(stems))))})
         return results

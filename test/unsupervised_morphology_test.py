@@ -11,12 +11,11 @@ class UnsupervisedMorphologyTest(unittest.TestCase):
         self.op = UnsupervisedMorphology()
 
     def test_run(self):
-        test_data = [Corpus("0", "", open('spanishText_230000_235000', 'r').read())]
+        test_data = [Corpus("0", "", open('brown.txt', 'r').read())]
         results = self.op.run(test_data)
         results = json.loads(results)
         self.assertIsNotNone(results)
-        print(results)
-        raise Exception
+        # TODO: Add better verification
 
 
 if __name__ == '__main__':

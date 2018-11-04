@@ -125,7 +125,7 @@ def main():
                 xml_file.write(decompressed_file)
         if test_mode:
             break
-    out_file_name = 'extracted.xml'
+    out_file_name = 'vowiki.txt'
     pages_saved = 0
     with open(out_file_name, 'w') as out_file:
         for link in articles_links:
@@ -140,7 +140,9 @@ def main():
 
             for page in page_gen(link):
                 if page.find('ns').text == '0':
-                    out_file.write(wikicorpus.filter_wiki(page.find('revision').find('text').text + '\n\n'))
+                    text = page.find('revision').find('text').text
+                    text = wikicorpus.filter_wiki(text)
+                    out_file.write(text + '\n\n')
                     pages_saved += 1
 
             if test_mode:
