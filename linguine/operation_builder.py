@@ -100,8 +100,10 @@ def get_operation_handler(operation):
         return CharNgrams()
     elif operation == 'length-stats':
         return LengthStatistics()
-    elif operation == 'topic-model':
-        return TopicModel()
+    elif operation == 'topic-model-10':
+        return TopicModel(10)
+    elif operation == 'topic-model-30':
+        return TopicModel(30)
     elif operation == 'word-vector':
         return WordVector()
     elif operation == 'unsup-morph':

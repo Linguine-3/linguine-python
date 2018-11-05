@@ -18,8 +18,9 @@ from linguine.ops.remove_punct import RemovePunct
 
 
 class TopicModel:
-    def __init__(self):
+    def __init__(self, num_topics=30):
         self.remove_punct = RemovePunct()
+        self.num_topics = num_topics
 
     def run(self, data):
         corpora = []
@@ -38,7 +39,7 @@ class TopicModel:
         """
         return self.execute(data, passes=10)
 
-    def execute(self, data, num_topics=30, passes=10):
+    def execute(self, data, passes=10):
         wordlists = [corpus.contents.lower().split() for corpus in data]
 
         stoplist = stopwords.words('english')
@@ -55,13 +56,12 @@ class TopicModel:
         bags_of_words = [dictionary.doc2bow(t) for t in wordlists]
 
         # This can take a while to run:
-        lda = LdaModel(bags_of_words, id2word=dictionary, num_topics=num_topics, passes=passes)
+        lda = LdaModel(bags_of_words, id2word=dictionary, num_topics=self.num_topics, passes=passes)
 
-        results = self.assemble_topics(lda, num_topics)
+        results = self.assemble_topics(lda)
         return json.dumps(results)
 
-    @staticmethod
-    def assemble_topics(lda_model, num_topics):
+    def assemble_topics(self, lda_model):
         """Print LDA model topics into a human-interpretable data structure
 
         Example:
@@ -81,12 +81,11 @@ class TopicModel:
         ]
         Args:
             lda_model: Gensim LDA model
-            num_topics: number of topics
         Returns:
             A list of topics, with each topic listing the word-prob pairs
         """
         topics = dict()
-        for n, topic in lda_model.show_topics(num_topics=num_topics, formatted=False):
+        for n, topic in lda_model.show_topics(num_topics=self.num_topics, formatted=False):
             topics[str(n)] = list()
             for word, prob in topic:
                 topics[str(n)].append({'probability': prob, 'word': word})
