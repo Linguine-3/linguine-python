@@ -3,10 +3,17 @@ import random
 
 import linguistica as lxa
 
+from linguine.ops.remove_punct import RemovePunct
+
 
 class UnsupervisedMorphology:
+    def __init__(self):
+        self.remove_punct = RemovePunct()
+
     def run(self, data):
         results = []
+
+        data = self.remove_punct.run(data)
 
         for corpus in data:
             lxa_object = lxa.from_corpus(corpus.contents)

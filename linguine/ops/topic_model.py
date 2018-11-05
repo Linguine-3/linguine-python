@@ -14,11 +14,12 @@ from gensim.models import LdaModel
 from nltk.corpus import stopwords
 
 from linguine.corpus import Corpus
+from linguine.ops.remove_punct import RemovePunct
 
 
 class TopicModel:
     def __init__(self):
-        pass
+        self.remove_punct = RemovePunct()
 
     def run(self, data):
         corpora = []
@@ -26,6 +27,8 @@ class TopicModel:
             sentences = [Corpus("0", "", sentence.strip()) for sentence in re.split(r'[.?!]', corpus.contents) if
                          sentence]
             corpora += sentences
+
+        corpora = self.remove_punct.run(corpora)
         return self.execute(corpora)
 
     def test_run(self, data):
