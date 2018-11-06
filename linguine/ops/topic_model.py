@@ -7,7 +7,6 @@ Uses the Gensim Topic Modeling library to find the most relevant topics
 TODO: define JSON format such that user can define num_topics, passes
 """
 import json
-import re
 
 from gensim.corpora import Dictionary
 from gensim.models import LdaModel
@@ -19,17 +18,17 @@ from linguine.ops.remove_punct import RemovePunct
 
 class TopicModel:
     def __init__(self, num_topics=30):
-        self.remove_punct = RemovePunct()
         self.num_topics = num_topics
 
     def run(self, data):
         corpora = []
         for corpus in data:
-            sentences = [Corpus("0", "", sentence.strip()) for sentence in re.split(r'[.?!]', corpus.contents) if
-                         sentence]
+            sentences = [Corpus(str(i), "", sentence.strip()) for i, sentence in
+                         enumerate(corpus.contents.split('\n\n')) if sentence]
             corpora += sentences
 
-        corpora = self.remove_punct.run(corpora)
+        print('Num corpora = {}'.format(len(corpora)))
+        corpora = RemovePunct().run(corpora)
         return self.execute(corpora)
 
     def test_run(self, data):

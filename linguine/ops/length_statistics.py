@@ -10,7 +10,8 @@ class LengthStatistics:
 
         for corpus in data:
             corpus.contents = corpus.contents.strip()
-            sentences = [sentence.strip() for sentence in re.split(r'[.?!]', corpus.contents) if sentence]
+            sentences = [re.sub(r"[.,:;!?()[\]{\}]", "", sentence.strip()) for sentence in
+                         re.split(r'[.?!]', corpus.contents) if sentence]
             words_by_sentence = [re.split(r'\s+', sentence) for sentence in sentences]
             words = list(chain.from_iterable(words_by_sentence))
             sentence_lengths = [len(sentence) for sentence in words_by_sentence]
