@@ -4,8 +4,7 @@ from gensim.models import Word2Vec
 
 
 class WordVector:
-    def __init__(self):
-        self.model = Word2Vec.load_word2vec_format('linguine/ops/glove.6B.50d.w2vformat.txt', binary=False)
+    model = Word2Vec.load_word2vec_format('linguine/ops/glove.6B.50d.w2vformat.txt', binary=False)
 
     def run(self, data):
         results = []
@@ -28,7 +27,7 @@ class WordVector:
         return json.dumps(results)
 
     def get_similarity(self, word1, word2):
-        return self.model.similarity(word1, word2)
+        return WordVector.model.similarity(word1, word2)
 
     def get_most_similar(self, positive=None, negative=None):
         if positive is None:
@@ -36,4 +35,4 @@ class WordVector:
         if negative is None:
             negative = []
 
-        return self.model.most_similar(positive=positive, negative=negative)
+        return WordVector.model.most_similar(positive=positive, negative=negative)
