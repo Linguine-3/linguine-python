@@ -55,3 +55,6 @@ target/
 .idea
 
 *.swp
+
+# Embedded document
+linguine/ops/glove.6B.50d.w2vformat.txt
