@@ -26,6 +26,7 @@ from linguine.ops.char_ngrams import CharNgrams
 from linguine.ops.length_statistics import LengthStatistics
 from linguine.ops.word_vector import WordVector
 from linguine.ops.unsupervised_morphology import UnsupervisedMorphology
+from linguine.ops.bigram_array import BigramArray
 
 def get_operation_handler(operation):
     if operation == 'lemmatize_wordnet':
@@ -108,6 +109,8 @@ def get_operation_handler(operation):
         return WordVector()
     elif operation == 'unsup-morph':
         return UnsupervisedMorphology()
+    elif operation == 'bigram-array':
+        return BigramArray()
     elif operation == 'noop':
         return NoOp()
     else:

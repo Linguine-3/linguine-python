@@ -96,7 +96,7 @@ class SplatNGrams:
                                 'bigrams': bigrams,
                                 'trigrams': trigrams})
             results = json.dumps(results)
-            print(results)
+            #print(results)
             return results
         except TypeError:
             raise TransactionException('Corpus contents does not exist.')
