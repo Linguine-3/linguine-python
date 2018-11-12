@@ -18,7 +18,7 @@ class LengthStatistics:
             word_lengths = [len(word) for word in words]
             results.append({'sentences': self.get_stats(sentence_lengths), 'words': self.get_stats(word_lengths)})
 
-        return json.dumps(results)
+        return results
 
     def get_stats(self, lengths):
         results = {

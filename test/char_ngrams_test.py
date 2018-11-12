@@ -28,7 +28,7 @@ class CharNgramsOpTest(unittest.TestCase):
                                          "n_f": 1, "ove": 1, "own": 1, "ox_": 1, "ped": 1, "qui": 1, "r_t": 1, "row": 1,
                                          "the": 2, "uic": 1, "ump": 1, "ver": 1, "wn_": 1, "x_j": 1, "y_d": 1,
                                          "zy_": 1}}]
-        self.assertEqual(json.loads(results), desired_results)
+        self.assertEqual(results, desired_results)
 
 
 if __name__ == '__main__':

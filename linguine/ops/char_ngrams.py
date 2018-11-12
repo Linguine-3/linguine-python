@@ -19,4 +19,4 @@ class CharNgrams:
             result['bigrams'] = {word.replace(' ', ''): count for word, count in result['bigrams'].items()}
             result['trigrams'] = {word.replace(' ', ''): count for word, count in result['trigrams'].items()}
 
-        return json.dumps(results)
+        return results

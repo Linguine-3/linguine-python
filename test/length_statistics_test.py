@@ -17,7 +17,7 @@ class LengthStatisticsOpTest(unittest.TestCase):
         print(results)
         desired_results = [{'words': {'median': 4.0, 'std': 1.6919330254585618, 'mean': 4.357142857142857},
                             'sentences': {'median': 7.0, 'std': 2.8284271247461903, 'mean': 7}}]
-        self.assertEqual(json.loads(results), desired_results)
+        self.assertEqual(results, desired_results)
 
 
 if __name__ == '__main__':

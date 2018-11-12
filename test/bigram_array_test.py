@@ -95,7 +95,7 @@ class BigramArrayTest(unittest.TestCase):
                  "n": {"p": 0, "b": 0, "d": 0, "j": 0, "r": 0, "x": 0, "f": 0, "t": 0, "q": 0, "e": 0, "g": 0, "a": 0,
                        "o": 0, "u": 0, "w": 0, "h": 0, "k": 0, "y": 0, "v": 0, "z": 0, "i": 0, "c": 0, "m": 0, "_": 1,
                        "l": 0, "n": 0}}}]
-        self.assertEqual(json.loads(results), desired_results)
+        self.assertEqual(results, desired_results)
 
 
 if __name__ == '__main__':

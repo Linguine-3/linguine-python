@@ -27,7 +27,7 @@ class WordVectorTest(unittest.TestCase):
                         {'score': 0.7214491367340088, 'word': 'monarch'},
                         {'score': 0.7184862494468689, 'word': 'eldest'},
                         {'score': 0.7099430561065674, 'word': 'widow'}]}]
-        # self.assertEqual(json.loads(results), desired_results)
+        # self.assertEqual(results, desired_results)
         self.assertIsNotNone(results)
         # TODO: Add better verification
 

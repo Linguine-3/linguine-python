@@ -58,7 +58,7 @@ class TopicModel:
         lda = LdaModel(bags_of_words, id2word=dictionary, num_topics=self.num_topics, passes=passes)
 
         results = self.assemble_topics(lda)
-        return json.dumps(results)
+        return results
 
     def assemble_topics(self, lda_model):
         """Print LDA model topics into a human-interpretable data structure

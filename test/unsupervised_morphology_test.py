@@ -13,7 +13,6 @@ class UnsupervisedMorphologyTest(unittest.TestCase):
     def test_run(self):
         test_data = [Corpus("0", "", open('brown.txt', 'r').read())]
         results = self.op.run(test_data)
-        results = json.loads(results)
         self.assertIsNotNone(results)
         # TODO: Add better verification
 

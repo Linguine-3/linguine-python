@@ -5,7 +5,7 @@ from linguine.ops.char_ngrams import CharNgrams
 
 class BigramArray:
     def run(self, data):
-        ngram_results = json.loads(CharNgrams().run(data))
+        ngram_results = CharNgrams().run(data)
 
         results = []
         for ngram_result in ngram_results:
@@ -23,4 +23,4 @@ class BigramArray:
 
             results.append(result)
 
-        return json.dumps(results)
+        return results

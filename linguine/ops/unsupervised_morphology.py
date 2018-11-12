@@ -17,7 +17,7 @@ class UnsupervisedMorphology:
             sigs_to_stems = lxa_object.signatures_to_stems()
             results.append(self.output_to_results(sigs_to_stems))
 
-        return json.dumps(results)
+        return results
 
     def output_to_results(self, sigs_to_stems):
         results = []

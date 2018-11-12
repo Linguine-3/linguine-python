@@ -32,7 +32,7 @@ class WordVector:
                     result["type"] = "error"
                     result["command"] = line.strip()
                 results.append(result)
-        return json.dumps(results)
+        return results
 
     def get_similarity(self, word1, word2):
         return WordVector.model.similarity(word1, word2)
