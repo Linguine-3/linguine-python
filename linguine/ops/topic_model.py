@@ -45,13 +45,11 @@ class TopicModel:
 
         dictionary = Dictionary(wordlists)
 
-        # Remove stop words
+        # Remove stop words and words that appear too much or too little
         stop_ids = [dictionary.token2id[stopword] for stopword in stoplist if stopword in dictionary.token2id]
-        # once_ids = [token_id for token_id, doc_freq in dictionary.dfs.items() if doc_freq == 1]
         dictionary.filter_tokens(stop_ids)
-        dictionary.compactify()
+        dictionary.filter_extremes(no_below=2, no_above=0.2)
 
-        # dictionary.filter_extremes(no_above=0.5)
         bags_of_words = [dictionary.doc2bow(t) for t in wordlists]
 
         # This can take a while to run:
