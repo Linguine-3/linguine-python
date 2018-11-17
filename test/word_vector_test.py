@@ -27,7 +27,7 @@ class WordVectorTest(unittest.TestCase):
                         {'score': 0.7214491367340088, 'word': 'monarch'},
                         {'score': 0.7184862494468689, 'word': 'eldest'},
                         {'score': 0.7099430561065674, 'word': 'widow'}]}]
-        self.assertEqual(round_json_floats(results), round_json_floats(desired_results))
+        self.assertEqual(round_json_floats(results, 4), round_json_floats(desired_results, 4))
 
 
 if __name__ == '__main__':
