@@ -1,21 +1,23 @@
 import unittest
-import sys
-
-from linguine.ops.word_tokenize import WordTokenizeTreebank, WordTokenizeWhitespacePunct, WordTokenizeStanford, WordTokenizeSpaces, WordTokenizeSpaces
 
 from linguine.corpus import Corpus
+from linguine.ops.word_tokenize import WordTokenizeSpaces
 
-class PosTagTest(unittest.TestCase):
+
+class WordTokenizeTest(unittest.TestCase):
 
     def setUp(self):
-        self.op = WordTokenizeTreebank()
+        self.op = WordTokenizeSpaces()
 
     def test_run(self):
-        self.op = WordTokenizeSpaces()
-        self.test_data = [ Corpus("0","hello", "hello world"), Corpus("1", "goodbye", "goodbye world") ]
-        desired_results = []
-        desired_results.append({ "corpus_id" : "0", "tokenized_content" : ["hello","world"]})
-        desired_results.append({ "corpus_id" : "1", "tokenized_content" : ["goodbye","world"]})
+        test_data = [Corpus("0", "hello", "hello world"), Corpus("1", "goodbye", "goodbye world")]
+        results = self.op.run(test_data)
+        desired_results = {"0": ["hello", "world"],
+                           "1": ["goodbye", "world"]}
+        self.assertIsNotNone(results)
+        for corpus in results:
+            self.assertEqual(corpus.tokenized_contents, desired_results[corpus.id])
+
 
 if __name__ == '__main__':
     unittest.main()
