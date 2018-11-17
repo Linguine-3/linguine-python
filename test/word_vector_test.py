@@ -1,8 +1,8 @@
-import json
 import unittest
 
 from linguine.corpus import Corpus
 from linguine.ops.word_vector import WordVector
+from test.test_utils import round_json_floats
 
 
 class WordVectorTest(unittest.TestCase):
@@ -27,9 +27,7 @@ class WordVectorTest(unittest.TestCase):
                         {'score': 0.7214491367340088, 'word': 'monarch'},
                         {'score': 0.7184862494468689, 'word': 'eldest'},
                         {'score': 0.7099430561065674, 'word': 'widow'}]}]
-        # self.assertEqual(results, desired_results)
-        self.assertIsNotNone(results)
-        # TODO: Add better verification
+        self.assertEqual(round_json_floats(results), round_json_floats(desired_results))
 
 
 if __name__ == '__main__':

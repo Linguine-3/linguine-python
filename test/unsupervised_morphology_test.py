@@ -1,4 +1,3 @@
-import json
 import unittest
 
 from linguine.corpus import Corpus
@@ -14,7 +13,11 @@ class UnsupervisedMorphologyTest(unittest.TestCase):
         test_data = [Corpus("0", "", open('brown.txt', 'r').read())]
         results = self.op.run(test_data)
         self.assertIsNotNone(results)
-        # TODO: Add better verification
+        for result in results:
+            self.assertTrue(result)
+            for sigs_stems in result:
+                self.assertTrue(sigs_stems['affixes'])
+                self.assertLessEqual(len(sigs_stems['roots']), 15)
 
 
 if __name__ == '__main__':
