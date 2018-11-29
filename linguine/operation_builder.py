@@ -13,7 +13,7 @@ from linguine.ops.remove_stopwords import RemoveStopwords
 from linguine.ops.remove_hashtags import RemoveHashtags
 from linguine.ops.remove_quotes import RemoveQuotes
 from linguine.ops.sentence_tokenize import SentenceTokenize
-from linguine.ops.stem import StemmerLancaster, StemmerPorter, StemmerSnowball
+from linguine.ops.stem import StemmerPorter
 from linguine.ops.topic_model import TopicModel
 from linguine.ops.word_tokenize import WordTokenizeTreebank, \
         WordTokenizeWhitespacePunct, WordTokenizeStanford, \
@@ -51,10 +51,6 @@ def get_operation_handler(operation):
         return RemoveQuotes()
     elif operation == 'stem_porter':
         return StemmerPorter()
-    elif operation == 'stem_lancaster':
-        return StemmerLancaster()
-    elif operation == 'stem_snowball':
-        return StemmerSnowball()
     elif operation == 'stop_words':
         return RemoveStopwords()
     elif operation == 'tfidf':
