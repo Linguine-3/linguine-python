@@ -2,7 +2,7 @@ import unittest
 
 from linguine.corpus import Corpus
 from linguine.ops.word_cloud_op import WordCloudOp
-from linguine.ops.word_tokenize import WordTokenizeSpaces
+from linguine.ops.word_tokenize import WordTokenizeWhitespacePunct
 
 
 class WordCloudOpTest(unittest.TestCase):
@@ -12,7 +12,7 @@ class WordCloudOpTest(unittest.TestCase):
 
     def test_run(self):
         test_data = [Corpus("0", "hello", "hello world hello hello world test")]
-        WordTokenizeSpaces().run(test_data)
+        WordTokenizeWhitespacePunct().run(test_data)
         desired_results = [{"term": "hello", "frequency": 3},
                            {"term": "world", "frequency": 2},
                            {"term": "test", "frequency": 1}]

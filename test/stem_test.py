@@ -2,7 +2,7 @@ import unittest
 
 from linguine.corpus import Corpus
 from linguine.ops.stem import StemmerPorter
-from linguine.ops.word_tokenize import WordTokenizeSpaces
+from linguine.ops.word_tokenize import WordTokenizeWhitespacePunct
 
 
 class StemTest(unittest.TestCase):
@@ -13,7 +13,7 @@ class StemTest(unittest.TestCase):
     def test_porter(self):
         test_data = [Corpus("0", "", ' '.join(
             ['strange', 'women', 'lying', 'ponds', 'distributing', 'swords', 'no', 'basis', 'system', 'government']))]
-        test_data = WordTokenizeSpaces().run(test_data)
+        test_data = WordTokenizeWhitespacePunct().run(test_data)
         desired_results = {
             "0": ['strang', 'women', 'lie', 'pond', 'distribut', 'sword', 'no', 'basi', 'system', 'govern']}
         results = self.op.run(test_data)
