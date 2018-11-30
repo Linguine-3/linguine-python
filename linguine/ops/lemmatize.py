@@ -20,11 +20,7 @@ class LemmatizerWordNet:
                     else word 
                     for (word,tag) in tags]
 
-            corpusString = ""
-            for index, word in enumerate(corpus.tokenized_contents):
-                corpusString += corpus.tokenized_contents[index] + " "
-
-            corpus.contents = corpusString
+            corpus.contents = ' '.join(corpus.tokenized_contents)
 
         return data
     def getWordNetPartOfSpeech(self,treebank_tag):

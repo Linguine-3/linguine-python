@@ -70,7 +70,7 @@ class SplatTest(unittest.TestCase):
                                          "NN": ["quick", "brown", "fox", "lazy", "dog"], ".": ["."]},
                             "pos_counts": {"DT": 2, "JJ": 1, "IN": 1, "VBD": 2, "VB": 1, "PRP": 2, "NN": 5, ".": 2}
                             }]
-        self.assertEqual(round_json_floats(results), round_json_floats(desired_results))
+        self.assertEqual(results, desired_results)
 
     def test_run_syllables(self):
         self.op = SplatSyllables()
@@ -79,7 +79,7 @@ class SplatTest(unittest.TestCase):
         desired_results = [{'corpus_id': '0',
                             'syllables': {'1': ['the', 'quick', 'brown', 'fox', 'jumped', 'dog', 'i', 'saw', 'it'],
                                           '2': ['very', 'over', 'lazy', 'happen']}}]
-        self.assertEqual(round_json_floats(results), round_json_floats(desired_results))
+        self.assertEqual(results, desired_results)
 
     def test_run_pronouns(self):
         self.op = SplatPronouns()
@@ -119,7 +119,7 @@ class SplatTest(unittest.TestCase):
                                              'THEMSELVES': [0, '3rd-Person', 'Reflexive', 'Plural'],
                                              'THEM': [1, '3rd-Person', 'Personal', 'Plural']},
                             'sentences': ['He and she jumped over my fence.', 'I saw them do so, and I told you.']}]
-        self.assertEqual(round_json_floats(results), round_json_floats(desired_results))
+        self.assertEqual(results, desired_results)
 
 
 if __name__ == '__main__':
