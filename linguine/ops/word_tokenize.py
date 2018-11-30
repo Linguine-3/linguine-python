@@ -31,17 +31,3 @@ class WordTokenizeStanford:
         for corpus in data:
             corpus.tokenized_contents = StanfordTokenizer().tokenize(corpus.contents)
         return data
-class WordTokenizeSpaces:
-    def __init__(self):
-        pass
-    def run(self, data):
-        for corpus in data:
-            corpus.tokenized_contents = corpus.contents.split(' ')
-        return data
-class WordTokenizeTabs:
-    def __init__(self):
-        pass
-    def run(self, data):
-        for corpus in data:
-            corpus.tokenized_contents = corpus.contents.split('\t')
-        return data

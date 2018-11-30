@@ -3,7 +3,6 @@ from linguine.transaction_exception import TransactionException
 from linguine.ops.tfidf import Tfidf
 from linguine.ops.no_op import NoOp
 from linguine.ops.lemmatize import LemmatizerWordNet
-from linguine.ops.pos_tag import PosTag
 from linguine.ops.word_cloud_op import WordCloudOp
 from linguine.ops.remove_caps import RemoveCapsGreedy
 from linguine.ops.remove_caps import RemoveCapsPreserveNNP
@@ -16,8 +15,7 @@ from linguine.ops.sentence_tokenize import SentenceTokenize
 from linguine.ops.stem import StemmerPorter
 from linguine.ops.topic_model import TopicModel
 from linguine.ops.word_tokenize import WordTokenizeTreebank, \
-        WordTokenizeWhitespacePunct, WordTokenizeStanford, \
-        WordTokenizeSpaces, WordTokenizeTabs
+        WordTokenizeWhitespacePunct, WordTokenizeStanford
 from linguine.ops.StanfordCoreNLP import StanfordCoreNLP
 from linguine.ops.splat import SplatDisfluency, SplatNGrams, \
         SplatComplexity, SplatPOSFrequencies, SplatSyllables, \
@@ -31,8 +29,6 @@ from linguine.ops.bigram_array import BigramArray
 def get_operation_handler(operation):
     if operation == 'lemmatize_wordnet':
         return LemmatizerWordNet()
-    elif operation == 'pos_tag':
-        return PosTag()
     elif operation == 'removecapsgreedy':
         return RemoveCapsGreedy()
     elif operation == 'removecapsnnp':
@@ -63,10 +59,6 @@ def get_operation_handler(operation):
         return WordTokenizeWhitespacePunct()
     elif operation == 'word_tokenize_stanford':
         return WordTokenizeStanford()
-    elif operation == 'word_tokenize_spaces':
-        return WordTokenizeSpaces()
-    elif operation == 'word_tokenize_tabs':
-        return WordTokenizeTabs()
     elif operation == 'nlp-pos':
         return StanfordCoreNLP(['pos'])
     elif operation == 'nlp-ner':
