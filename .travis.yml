@@ -9,7 +9,7 @@ before_install:
 
 install:
  - pip install -r requirements.txt
- - python -m nltk.downloader stopwords names cmudict brown punkt averaged_perceptron_tagger maxent_treebank_pos_tagger
+ - python -m nltk.downloader stopwords names cmudict brown punkt averaged_perceptron_tagger maxent_treebank_pos_tagger wordnet
  - git clone https://github.com/ritlinguine/stanford_corenlp_pywrapper scp_repo
  - ln -s scp_repo/stanford_corenlp_pywrapper .
  - unzip -p glove.6B.zip glove.6B.50d.txt >glove.6B.50d.txt
