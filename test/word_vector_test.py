@@ -11,8 +11,8 @@ class WordVectorTest(unittest.TestCase):
         self.op = WordVector()
 
     def test_run(self):
-        commands = ["sim_score universities colleges", "sim_math +woman +king -man"]
-        test_data = [Corpus(0, "", "\n".join(commands))]
+        commands = ["sim_score universities colleges", "", "sim_math +woman +king -man"]
+        test_data = [Corpus(0, "", "\r\n".join(commands))]
         results = self.op.run(test_data)
         desired_results = [
             {'type': 'sim_score', 'word1': 'universities', 'score': 0.9215914199727002, 'word2': 'colleges'},

@@ -13,10 +13,12 @@ class WordVector:
     def run(self, data):
         results = []
         for corpus in data:
-            for line in corpus.contents.strip().split("\n"):
+            for line in corpus.contents.strip().splitlines():
                 result = {}
                 tokens = line.split()
-                if len(tokens) == 3 and tokens[0] == "sim_score":
+                if not tokens:  # Ignore blank lines
+                    continue
+                elif len(tokens) == 3 and tokens[0] == "sim_score":
                     result["type"] = "sim_score"
                     result["word1"] = tokens[1]
                     result["word2"] = tokens[2]
