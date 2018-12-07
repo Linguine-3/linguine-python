@@ -6,6 +6,7 @@ from bson.objectid import ObjectId
 
 from linguine.transaction import Transaction
 
+@unittest.skip("Transaction tests currently do nothing")
 class TransactionTest(unittest.TestCase):
 
     def setUp(self):
