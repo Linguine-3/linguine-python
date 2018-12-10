@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Given a set of texts, calculates the TF-IDF for each word-text pair in the set.
 Returns: A list of dictionaries containing a term, a corpus id, the term's importance in that corpus.

@@ -1,5 +1,8 @@
-# A null operation
-# Useful for unit testing or acting as a placeholder
+"""
+A null operation
+Useful for unit testing or acting as a placeholder
+"""
+
 
 class NoOp:
 

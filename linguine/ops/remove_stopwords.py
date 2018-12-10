@@ -1,13 +1,3 @@
-#!/usr/bin/env python
-"""
-Returns: The corpus list, with tokenized contents generated
-Given: Data containing a list of corpora to tokenize
-Uses the Penn Treebank corpus for the WordTokenizeTreebank tokenization.
-Uses the Stanford Tokenizer for WordTokenizeStanford.
-WordTokenizeWhitespacePunct splits the text on whitespace and punctuation marks.
-WordTokenizeSpaces splits the text using the space character as a delimiter.
-WordTokenizeTabs splits the text using the tab character as a delimiter.
-"""
 from nltk.corpus import stopwords
 
 from linguine.untokenize import untokenize

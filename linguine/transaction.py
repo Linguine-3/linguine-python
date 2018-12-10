@@ -31,8 +31,8 @@ class Transaction:
                                        'stem_snowball', 'lemmatize_wordnet']
         self.is_finished = False
 
-    # Read in all corpora that are specified for a given transaction
     def read_corpora(self, corpora_ids):
+        """Read in all corpora that are specified for a given transaction"""
         try:
             # load corpora from database
             corpora = DatabaseAdapter.getDB().corpus
@@ -43,9 +43,11 @@ class Transaction:
         except (TypeError, InvalidId):
             raise TransactionException('Could not find corpus.')
 
-    # Insert an analysis record into the database,
-    # acknowledging that an analysis is to be processed.
     def create_analysis_record(self):
+        """
+        Insert an analysis record into the database,
+        acknowledging that an analysis is to be processed.
+        """
         analysis = {'user_id': ObjectId(self.user_id),
                     'analysis_name': self.analysis_name,
                     'corpora_ids': self.corpora_ids,
@@ -58,8 +60,8 @@ class Transaction:
                     'analysis': self.operation}
         return DatabaseAdapter.getDB().analyses.insert(analysis)
 
-    # Write result object to DB
     def write_result(self, result, analysis_id):
+        """Write result object to DB"""
         analysis = DatabaseAdapter.getDB().analyses.find_one({"_id": ObjectId(analysis_id)})
 
         analysis['complete'] = True
@@ -70,9 +72,11 @@ class Transaction:
         DatabaseAdapter.getDB().analyses.update({'_id': ObjectId(analysis_id)}, analysis)
         self.is_finished = True
 
-    # Parse a JSON request from the linguine-node webserver,
-    # Requesting that an analysis should be preformed
     def parse_json(self, json_data):
+        """
+        Parse a JSON request from the linguine-node webserver,
+        Requesting that an analysis should be preformed
+        """
         try:
             input_data = json.loads(json_data.decode())
 
@@ -95,12 +99,11 @@ class Transaction:
         except ValueError:
             raise TransactionException('Could not parse JSON.')
 
-    """
-    Calculate the estimated time that a transaction will require to complete.
-    this will be stored in the database record to display on the client
-    """
-
     def calcETA(self, numTransactions):
+        """
+        Calculate the estimated time that a transaction will require to complete.
+        this will be stored in the database record to display on the client
+        """
         time = 0
         # For now, assume the transaction queue adds 30secs per transaction
         time += numTransactions * 30
@@ -112,14 +115,13 @@ class Transaction:
 
         self.eta = time
 
-    """
-    Execute the given analysis that has been fetched from the thread pool
-    @args: MainHandler - Instance of parent class that keeps track of
-    num of Transactions
-           analysis_id - unique identifier of this Transaction
-    """
-
     def run(self, analysis_id, MainHandler):
+        """
+        Execute the given analysis that has been fetched from the thread pool
+        @args: MainHandler - Instance of parent class that keeps track of
+        num of Transactions
+               analysis_id - unique identifier of this Transaction
+        """
         try:
             start = time.clock()
             corpora = self.corpora

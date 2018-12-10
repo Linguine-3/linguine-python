@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import json
 import os
 
@@ -11,16 +10,16 @@ from stanford_corenlp_pywrapper import CoreNLP
 
 class StanfordCoreNLP:
     proc = None
-    """
-    When the JSON segments return from the CoreNLP library, they
-    separate the data acquired from each word into their own element.
-
-    For readability's sake, it would be nice to pair all of the information
-    for a given word with that word, making a list of words with their
-    part of speech tags
-    """
 
     def jsonCleanup(self, data, analysisTypes):
+        """
+        When the JSON segments return from the CoreNLP library, they
+        separate the data acquired from each word into their own element.
+
+        For readability's sake, it would be nice to pair all of the information
+        for a given word with that word, making a list of words with their
+        part of speech tags
+        """
         for corpus in data:
             res = StanfordCoreNLP.proc.parse_doc(corpus.contents)
             print(res)
@@ -66,10 +65,7 @@ class StanfordCoreNLP:
             StanfordCoreNLP.proc = CoreNLP(configdict={
                 'annotators': 'tokenize, ssplit, pos, lemma, ner, parse, sentiment, dcoref, relation, natlog, openie'},
                 corenlp_jars=[os.path.join(os.path.dirname(__file__),
-                                           '../../../stanford_corenlp_pywrapper/stanford_corenlp_pywrapper/lib/*')])  # , comm_mode='PIPE')
-        # else:
-        #    StanfordCoreNLP.proc = CoreNLP(configdict={'annotators':', '.join(analysisType)},
-        #    corenlp_jars=[os.path.join(os.path.dirname(__file__), '../../lib/*')])
+                                           '../../../stanford_corenlp_pywrapper/stanford_corenlp_pywrapper/lib/*')])
 
     def run(self, data):
         result = self.jsonCleanup(data, self.analysisType)

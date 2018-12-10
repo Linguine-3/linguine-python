@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Removes all silent pause tokens, {SL}, from a text.
 Returns the text as a single string separated by spaces.

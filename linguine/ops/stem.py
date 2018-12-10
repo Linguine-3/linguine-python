@@ -1,9 +1,7 @@
-#!/usr/bin/env python
 """
 Returns: A list of words that have been stemmed using the chosen method
 Given: A list of strings representing a tokenized collection of words.
-There are three stemming algorithms available: The Porter stemmer,
-the Lancaster stemmer, and the Snowball stemmer.
+There is one stemming algorithm available: The Porter stemmer.
 """
 from nltk.stem.porter import PorterStemmer
 

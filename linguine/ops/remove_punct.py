@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Removes all nonessential punctuation from a text.
 Returns the text as a single string separated by spaces.

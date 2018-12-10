@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Returns: A list of lemmas generated from the given corpora
 Given: Tokenized contents of corpora
@@ -27,8 +26,10 @@ class LemmatizerWordNet:
         return data
 
     def getWordNetPartOfSpeech(self, treebank_tag):
-        # So the WordNetLemmatizer in NLTK expects POS tags in a different format than NLTK itself writes them.
-        # So this function does the conversion to make them compatible.
+        """
+        So the WordNetLemmatizer in NLTK expects POS tags in a different format than NLTK itself writes them.
+        So this function does the conversion to make them compatible.
+        """
         if treebank_tag.startswith('J'):
             return 'a'
         elif treebank_tag.startswith('V'):
