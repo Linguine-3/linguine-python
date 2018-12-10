@@ -6,7 +6,9 @@ author: peter mikitsh
 """
 
 import os
+
 from pymongo import MongoClient
+
 
 class DatabaseAdapter:
 

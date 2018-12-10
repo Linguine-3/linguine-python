@@ -9,10 +9,14 @@ WordTokenizeSpaces splits the text using the space character as a delimiter.
 WordTokenizeTabs splits the text using the tab character as a delimiter.
 """
 from nltk.corpus import stopwords
+
 from linguine.untokenize import untokenize
+
+
 class RemoveStopwords:
     def __init__(self):
         pass
+
     def run(self, data):
         stopset = set(stopwords.words('english'))
         for corpus in data:

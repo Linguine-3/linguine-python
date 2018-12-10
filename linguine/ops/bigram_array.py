@@ -1,5 +1,3 @@
-import json
-
 from linguine.ops.char_ngrams import CharNgrams
 
 

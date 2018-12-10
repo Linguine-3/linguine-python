@@ -6,6 +6,7 @@ Returns the text as a single string separated by spaces.
 
 import re
 
+
 class RemoveHashtags:
     def run(self, data):
         results = []

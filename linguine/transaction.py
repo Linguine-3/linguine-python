@@ -1,15 +1,15 @@
 import json
-import traceback
 import time
-import linguine.operation_builder
-from multiprocessing import Pool
-from linguine.corpus import Corpus
-from tornado import gen
-from pymongo import MongoClient
-from bson.objectid import ObjectId
+import traceback
+
 from bson.errors import InvalidId
+from bson.objectid import ObjectId
+
+import linguine.operation_builder
+from linguine.corpus import Corpus
 from linguine.database_adapter import DatabaseAdapter
 from linguine.transaction_exception import TransactionException
+
 
 class Transaction:
     def __init__(self, env=None):
@@ -21,44 +21,46 @@ class Transaction:
         self.corpora_ids = []
         self.time_created = None
         self.corpora = []
-        #self.analysis_pool = Pool(processes=5)
+        # self.analysis_pool = Pool(processes=5)
         self.analysis_name = ""
         self.cleanups = []
         self.current_result = None
         self.tokenizer = None
-        self.token_based_operations = ['tfidf','word_cloud_op',
-                'stem_porter','stem_lancaster',
-                'stem_snowball','lemmatize_wordnet']
+        self.token_based_operations = ['tfidf', 'word_cloud_op',
+                                       'stem_porter', 'stem_lancaster',
+                                       'stem_snowball', 'lemmatize_wordnet']
         self.is_finished = False
-    #Read in all corpora that are specified for a given transaction
+
+    # Read in all corpora that are specified for a given transaction
     def read_corpora(self, corpora_ids):
         try:
-            #load corpora from database
+            # load corpora from database
             corpora = DatabaseAdapter.getDB().corpus
             for id in self.corpora_ids:
-                corpus = corpora.find_one({"_id" : ObjectId(id)})
+                corpus = corpora.find_one({"_id": ObjectId(id)})
                 self.corpora.append(Corpus(id, corpus["title"],
-                    corpus["contents"], corpus["tags"]))
+                                           corpus["contents"], corpus["tags"]))
         except (TypeError, InvalidId):
             raise TransactionException('Could not find corpus.')
-    #Insert an analysis record into the database,
+
+    # Insert an analysis record into the database,
     # acknowledging that an analysis is to be processed.
     def create_analysis_record(self):
-        analysis = {'user_id':ObjectId(self.user_id),
+        analysis = {'user_id': ObjectId(self.user_id),
                     'analysis_name': self.analysis_name,
-                    'corpora_ids':self.corpora_ids,
-                    'cleanup_ids':self.cleanups,
+                    'corpora_ids': self.corpora_ids,
+                    'cleanup_ids': self.cleanups,
                     'result': "",
                     'tokenizer': self.tokenizer,
                     'eta': self.eta,
                     'complete': False,
                     'time_created': self.time_created,
-                    'analysis':self.operation}
+                    'analysis': self.operation}
         return DatabaseAdapter.getDB().analyses.insert(analysis)
 
-    #Write result object to DB
+    # Write result object to DB
     def write_result(self, result, analysis_id):
-        analysis  = DatabaseAdapter.getDB().analyses.find_one({"_id" : ObjectId(analysis_id)})
+        analysis = DatabaseAdapter.getDB().analyses.find_one({"_id": ObjectId(analysis_id)})
 
         analysis['complete'] = True
         analysis['result'] = result
@@ -67,8 +69,9 @@ class Transaction:
 
         DatabaseAdapter.getDB().analyses.update({'_id': ObjectId(analysis_id)}, analysis)
         self.is_finished = True
-    #Parse a JSON request from the linguine-node webserver,
-    #Requesting that an analysis should be preformed
+
+    # Parse a JSON request from the linguine-node webserver,
+    # Requesting that an analysis should be preformed
     def parse_json(self, json_data):
         try:
             input_data = json.loads(json_data.decode())
@@ -91,21 +94,23 @@ class Transaction:
             raise TransactionException('Missing property transaction_id, operation, library, tokenizer or corpora_ids.')
         except ValueError:
             raise TransactionException('Could not parse JSON.')
+
     """
     Calculate the estimated time that a transaction will require to complete.
     this will be stored in the database record to display on the client
     """
-    def calcETA(self, numTransactions):
-      time = 0
-      #For now, assume the transaction queue adds 30secs per transaction
-      time += numTransactions * 30
-      #Check which type of transaction is being preformed
-      if "nlp" in self.operation:
-          #A raw guess that a CoreNLP analysis will take 1 second per
-          #10 words processed. 
-          time += (len(self.corpora[0].contents.split(" ")) / 10)
 
-      self.eta = time
+    def calcETA(self, numTransactions):
+        time = 0
+        # For now, assume the transaction queue adds 30secs per transaction
+        time += numTransactions * 30
+        # Check which type of transaction is being preformed
+        if "nlp" in self.operation:
+            # A raw guess that a CoreNLP analysis will take 1 second per
+            # 10 words processed.
+            time += (len(self.corpora[0].contents.split(" ")) / 10)
+
+        self.eta = time
 
     """
     Execute the given analysis that has been fetched from the thread pool
@@ -113,6 +118,7 @@ class Transaction:
     num of Transactions
            analysis_id - unique identifier of this Transaction
     """
+
     def run(self, analysis_id, MainHandler):
         try:
             start = time.clock()
@@ -121,36 +127,35 @@ class Transaction:
             analysis = {}
             if not self.tokenizer == None and not self.tokenizer == '':
                 op_handler = linguine.operation_builder \
-                .get_operation_handler(self.tokenizer)
+                    .get_operation_handler(self.tokenizer)
                 tokenized_corpora = op_handler.run(corpora)
             for cleanup in self.cleanups:
 
-                op_handler = linguine.operation_builder.\
-                get_operation_handler(cleanup)
+                op_handler = linguine.operation_builder. \
+                    get_operation_handler(cleanup)
                 corpora = op_handler.run(corpora)
-                #Corpora must be re tokenized after each cleanup
+                # Corpora must be re tokenized after each cleanup
                 if not self.tokenizer == None and not self.tokenizer == '':
-                  op_handler = linguine.operation_builder \
-                  .get_operation_handler(self.tokenizer)
-                  tokenized_corpora = op_handler.run(corpora)
+                    op_handler = linguine.operation_builder \
+                        .get_operation_handler(self.tokenizer)
+                    tokenized_corpora = op_handler.run(corpora)
 
-            op_handler = linguine.operation_builder.\
-                    get_operation_handler(self.operation)
+            op_handler = linguine.operation_builder. \
+                get_operation_handler(self.operation)
 
-            print("Preforming core operation for analysis " + str(analysis_id) + " with op " +str(op_handler))
+            print("Preforming core operation for analysis " + str(analysis_id) + " with op " + str(op_handler))
             self.write_result(op_handler.run(corpora), str(analysis_id))
 
-            #write transaction time to console 
-            print(self.analysis_name,',', (time.clock() - start) * 1000)
-            #Subtract one from analysis running count now that we're complete
+            # write transaction time to console
+            print(self.analysis_name, ',', (time.clock() - start) * 1000)
+            # Subtract one from analysis running count now that we're complete
             MainHandler.numTransactionsRunning -= 1
 
         except Exception as e:
-            #print(e.error)
+            # print(e.error)
             print("===========error==================")
             print(e)
             print(e.args)
             traceback.print_exc()
-            #print(json.JSONEncoder().encode({'error': e.error}))
+            # print(json.JSONEncoder().encode({'error': e.error}))
             print("===========end_error==================")
-

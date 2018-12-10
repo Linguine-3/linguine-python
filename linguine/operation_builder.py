@@ -1,30 +1,28 @@
-import sys
-from linguine.transaction_exception import TransactionException
-from linguine.ops.tfidf import Tfidf
-from linguine.ops.no_op import NoOp
+from linguine.ops.StanfordCoreNLP import StanfordCoreNLP
+from linguine.ops.bigram_array import BigramArray
+from linguine.ops.char_ngrams import CharNgrams
 from linguine.ops.lemmatize import LemmatizerWordNet
-from linguine.ops.word_cloud_op import WordCloudOp
+from linguine.ops.length_statistics import LengthStatistics
+from linguine.ops.no_op import NoOp
 from linguine.ops.remove_caps import RemoveCapsGreedy
 from linguine.ops.remove_caps import RemoveCapsPreserveNNP
+from linguine.ops.remove_hashtags import RemoveHashtags
 from linguine.ops.remove_punct import RemovePunct
+from linguine.ops.remove_quotes import RemoveQuotes
 from linguine.ops.remove_silent_pauses import RemoveSilence
 from linguine.ops.remove_stopwords import RemoveStopwords
-from linguine.ops.remove_hashtags import RemoveHashtags
-from linguine.ops.remove_quotes import RemoveQuotes
 from linguine.ops.sentence_tokenize import SentenceTokenize
+from linguine.ops.splat import SplatComplexity, SplatDisfluency, SplatNGrams, SplatPOSFrequencies, SplatPronouns, \
+    SplatSyllables
 from linguine.ops.stem import StemmerPorter
+from linguine.ops.tfidf import Tfidf
 from linguine.ops.topic_model import TopicModel
-from linguine.ops.word_tokenize import WordTokenizeTreebank, \
-        WordTokenizeWhitespacePunct, WordTokenizeStanford
-from linguine.ops.StanfordCoreNLP import StanfordCoreNLP
-from linguine.ops.splat import SplatDisfluency, SplatNGrams, \
-        SplatComplexity, SplatPOSFrequencies, SplatSyllables, \
-        SplatPronouns
-from linguine.ops.char_ngrams import CharNgrams
-from linguine.ops.length_statistics import LengthStatistics
-from linguine.ops.word_vector import WordVector
 from linguine.ops.unsupervised_morphology import UnsupervisedMorphology
-from linguine.ops.bigram_array import BigramArray
+from linguine.ops.word_cloud_op import WordCloudOp
+from linguine.ops.word_tokenize import WordTokenizeStanford, WordTokenizeTreebank, WordTokenizeWhitespacePunct
+from linguine.ops.word_vector import WordVector
+from linguine.transaction_exception import TransactionException
+
 
 def get_operation_handler(operation):
     if operation == 'lemmatize_wordnet':

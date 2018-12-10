@@ -6,7 +6,6 @@ Uses the Gensim Topic Modeling library to find the most relevant topics
 
 TODO: define JSON format such that user can define num_topics, passes
 """
-import json
 
 from gensim.corpora import Dictionary
 from gensim.models import LdaModel

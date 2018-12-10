@@ -4,8 +4,10 @@ Given a set of texts, calculates the TF-IDF for each word-text pair in the set.
 Returns: A list of dictionaries containing a term, a corpus id, the term's importance in that corpus.
 Given: A list of corpuses
 """
-import math, nltk, re, pprint
+import math
+
 from linguine.transaction_exception import TransactionException
+
 
 class Tfidf:
     def __init__(self):
@@ -14,6 +16,7 @@ class Tfidf:
         # list to hold occurrences of terms across documents
         self.global_term_freq = {}
         self.num_docs = 0
+
     def run(self, data):
         self.num_docs = len(data)
         try:
@@ -27,7 +30,7 @@ class Tfidf:
                     else:
                         terms_in_doc[word] = 1
                 for (word, freq) in terms_in_doc.items():
-                    #If the word appears in a doc, increment the # of docs containing the word by 1
+                    # If the word appears in a doc, increment the # of docs containing the word by 1
                     if word in self.global_term_freq:
                         self.global_term_freq[word] += 1
                     else:
@@ -41,7 +44,7 @@ class Tfidf:
                 for (term, freq) in self.global_terms_in_doc[corpus.id].items():
                     idf = math.log(float(self.num_docs) / float(1 + self.global_term_freq[term]))
                     tfidf = float(freq) / float(max_freq) * float(idf)
-                    results.append({ 'corpus_id' : corpus.id, 'term' : term, 'importance' : tfidf })
+                    results.append({'corpus_id': corpus.id, 'term': term, 'importance': tfidf})
             return results
         except LookupError:
             raise TransactionException('NLTK \'Punkt\' Model not installed.', 500)

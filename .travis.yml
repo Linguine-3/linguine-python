@@ -4,23 +4,23 @@ python:
   - "3.4"
 
 before_install:
- - export BOTO_CONFIG=/dev/null
- - wget -c "https://nlp.stanford.edu/data/glove.6B.zip" "https://raw.githubusercontent.com/RaRe-Technologies/gensim/develop/gensim/scripts/glove2word2vec.py" "http://nlp.stanford.edu/software/stanford-corenlp-full-2015-12-09.zip"
+  - export BOTO_CONFIG=/dev/null
+  - wget -c "https://nlp.stanford.edu/data/glove.6B.zip" "https://raw.githubusercontent.com/RaRe-Technologies/gensim/develop/gensim/scripts/glove2word2vec.py" "http://nlp.stanford.edu/software/stanford-corenlp-full-2015-12-09.zip"
 
 install:
- - pip install -r requirements.txt
- - python -m nltk.downloader stopwords names cmudict brown punkt averaged_perceptron_tagger maxent_treebank_pos_tagger wordnet
- - git clone https://github.com/ritlinguine/stanford_corenlp_pywrapper ../stanford_corenlp_pywrapper
- - pip install ../stanford_corenlp_pywrapper
- - unzip -p stanford-corenlp-full-2015-12-09.zip stanford-corenlp-full-2015-12-09/stanford-corenlp-3.6.0-models.jar >../stanford_corenlp_pywrapper/stanford_corenlp_pywrapper/lib/stanford-corenlp-3.6.0-models.jar
- - rm stanford-corenlp-full-2015-12-09.zip
- - unzip -p glove.6B.zip glove.6B.50d.txt >glove.6B.50d.txt
- - python3.4 glove2word2vec.py --input glove.6B.50d.txt --output glove.6B.50d.w2vformat.txt
- - rm glove.6B.zip glove.6B.50d.txt glove2word2vec.py
- - mv glove.6B.50d.w2vformat.txt linguine/ops/
+  - pip install -r requirements.txt
+  - python -m nltk.downloader stopwords names cmudict brown punkt averaged_perceptron_tagger maxent_treebank_pos_tagger wordnet
+  - git clone https://github.com/ritlinguine/stanford_corenlp_pywrapper ../stanford_corenlp_pywrapper
+  - pip install ../stanford_corenlp_pywrapper
+  - unzip -p stanford-corenlp-full-2015-12-09.zip stanford-corenlp-full-2015-12-09/stanford-corenlp-3.6.0-models.jar >../stanford_corenlp_pywrapper/stanford_corenlp_pywrapper/lib/stanford-corenlp-3.6.0-models.jar
+  - rm stanford-corenlp-full-2015-12-09.zip
+  - unzip -p glove.6B.zip glove.6B.50d.txt >glove.6B.50d.txt
+  - python3.4 glove2word2vec.py --input glove.6B.50d.txt --output glove.6B.50d.w2vformat.txt
+  - rm glove.6B.zip glove.6B.50d.txt glove2word2vec.py
+  - mv glove.6B.50d.w2vformat.txt linguine/ops/
 
 script:
- - travis_wait nosetests
+  - travis_wait nosetests
 
 services:
- - mongodb
+  - mongodb

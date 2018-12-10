@@ -6,6 +6,7 @@ Returns the text as a single string separated by spaces.
 
 import re
 
+
 class RemoveSilence:
     def run(self, data):
         results = []

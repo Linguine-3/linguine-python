@@ -3,12 +3,13 @@
 The Tornado server used to receive operation requests and deliver results to the user.
 """
 import json
-import os, sys, psutil
-
-from sys import stderr
-from linguine.transaction import Transaction
+import os
+import sys
 from concurrent.futures import ThreadPoolExecutor
-from linguine.transaction_exception import TransactionException
+
+import psutil
+
+from linguine.transaction import Transaction
 
 """
 Check to ensure Tornado is installed
@@ -16,9 +17,10 @@ Check to ensure Tornado is installed
 try:
     import tornado.ioloop
     import tornado.web
-    #import tornado.exceptions.MultipleExceptionsRaised
+    # import tornado.exceptions.MultipleExceptionsRaised
 except ImportError:
     sys.stderr.write("Tornado not found.")
+
 
 class MainHandler(tornado.web.RequestHandler):
     numTransactionsRunning = 0
@@ -33,7 +35,7 @@ class MainHandler(tornado.web.RequestHandler):
     def post(self):
         self.set_header('Content-Type', 'application/json')
         try:
-            self.numTransactionsRunning+=1
+            self.numTransactionsRunning += 1
             transaction = Transaction()
             self.transactions.append(transaction)
             requestObj = transaction.parse_json(self.request.body)
@@ -41,15 +43,15 @@ class MainHandler(tornado.web.RequestHandler):
             transaction.calcETA(self.numTransactionsRunning)
             analysis_id = transaction.create_analysis_record()
 
-            #Generate response to server before kicking off analysis
+            # Generate response to server before kicking off analysis
             self.write(json.JSONEncoder().encode({'analysis_id': str(analysis_id)}))
             self.finish()
 
-            #Encapsulate running of analysis in a future
+            # Encapsulate running of analysis in a future
             print("Submitting analysis " + str(analysis_id) + " to analysis queue")
             f = self.analysis_executor.submit(transaction.run, analysis_id, self)
 
-#            print("Transactions: " + str(self.transactions))
+            # print("Transactions: " + str(self.transactions))
             for p in psutil.pids():
                 if psutil.Process(p).name() in ["python3.4", "java"]:
                     for child in psutil.Process(p).children():
@@ -58,15 +60,15 @@ class MainHandler(tornado.web.RequestHandler):
                         if cdict['status'] in ['sleeping', 'zombie'] and self.numTransactionsRunning == 0:
                             print("There are no transactions running currently. Cleaning up idle java threads.")
                             child.kill()
-#        except tornado.exceptions.MultipleExceptionsRaised as multiple:
-#            for e in multiple.get_all_exceptions():
-#                print("===========error==================")
-#                try:
-#                    print(json.JSONEncoder().encode({'error': err.error}))
-#                except AttributeError as e:
-#                    print(json.JSONEncoder().encode({'error': e.error}))
-#                print("===========end_error==================")
-        #Keep this error instance as a catch-all for all web requests
+        # except tornado.exceptions.MultipleExceptionsRaised as multiple:
+        #    for e in multiple.get_all_exceptions():
+        #        print("===========error==================")
+        #        try:
+        #            print(json.JSONEncoder().encode({'error': err.error}))
+        #        except AttributeError as e:
+        #            print(json.JSONEncoder().encode({'error': e.error}))
+        #        print("===========end_error==================")
+        # Keep this error instance as a catch-all for all web requests
         except Exception as err:
             print("===========error==================")
             print(err.error)
@@ -77,6 +79,7 @@ class MainHandler(tornado.web.RequestHandler):
             print("===========end_error==================")
             self.set_status(err.code)
             self.write(json.JSONEncoder().encode({'error': err.error}))
+
 
 if __name__ == "__main__":
 
@@ -95,7 +98,7 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         pass
-    #Keep this error instance as a catch-all for all web requests
+    # Keep this error instance as a catch-all for all web requests
     except Exception as err:
         print("===========error==================")
         print(err)

@@ -1,4 +1,3 @@
-import json
 import re
 import statistics
 from itertools import chain
