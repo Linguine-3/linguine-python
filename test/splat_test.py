@@ -65,10 +65,11 @@ class SplatTest(unittest.TestCase):
         self.test_data = [Corpus("0", "Test", "The very quick brown fox jumped over the lazy dog.\nI saw it happen.")]
         results = json.loads(self.op.run(self.test_data))
         desired_results = [{"corpus_id": "0",
-                            "pos_tags": {"DT": ["The", "the"], "JJ": ["very"], "IN": ["over"], "VBD": ["jumped", "saw"],
-                                         "VB": ["happen"], "PRP": ["I", "it"],
-                                         "NN": ["quick", "brown", "fox", "lazy", "dog"], ".": ["."]},
-                            "pos_counts": {"DT": 2, "JJ": 1, "IN": 1, "VBD": 2, "VB": 1, "PRP": 2, "NN": 5, ".": 2}
+                            "pos_tags": {"PRP": ["I", "it"], "VB": ["happen"], "RB": ["very"], ".": ["."],
+                                         "VBD": ["jumped", "saw"], "DT": ["The", "the"], "IN": ["over"],
+                                         "JJ": ["quick", "lazy"], "NN": ["brown", "fox", "dog"]},
+                            "pos_counts": {"PRP": 2, "VB": 1, "RB": 1, ".": 2, "VBD": 2, "DT": 2, "IN": 1, "JJ": 2,
+                                           "NN": 3}
                             }]
         self.assertEqual(results, desired_results)
 
