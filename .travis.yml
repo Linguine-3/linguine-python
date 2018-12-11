@@ -15,7 +15,7 @@ install:
   - unzip -p stanford-corenlp-full-2015-12-09.zip stanford-corenlp-full-2015-12-09/stanford-corenlp-3.6.0-models.jar >../stanford_corenlp_pywrapper/stanford_corenlp_pywrapper/lib/stanford-corenlp-3.6.0-models.jar
   - rm stanford-corenlp-full-2015-12-09.zip
   - unzip -p glove.6B.zip glove.6B.50d.txt >glove.6B.50d.txt
-  - python3.4 glove2word2vec.py --input glove.6B.50d.txt --output glove.6B.50d.w2vformat.txt
+  - python glove2word2vec.py --input glove.6B.50d.txt --output glove.6B.50d.w2vformat.txt
   - rm glove.6B.zip glove.6B.50d.txt glove2word2vec.py
   - mv glove.6B.50d.w2vformat.txt linguine/ops/
 
