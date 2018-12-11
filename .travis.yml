@@ -16,7 +16,7 @@ install:
   - rm stanford-corenlp-full-2015-12-09.zip
   - unzip -p glove.6B.zip glove.6B.50d.txt >glove.6B.50d.txt
   - python -m gensim.scripts.glove2word2vec --input glove.6B.50d.txt --output glove.6B.50d.w2vformat.txt
-  - rm glove.6B.zip glove.6B.50d.txt glove2word2vec.py
+  - rm glove.6B.zip glove.6B.50d.txt
   - mv glove.6B.50d.w2vformat.txt linguine/ops/
 
 script:
