@@ -1,4 +1,4 @@
-from gensim.models import Word2Vec
+from gensim.models import KeyedVectors
 
 
 class WordVector:
@@ -6,7 +6,8 @@ class WordVector:
 
     def __init__(self):
         if WordVector.model is None:
-            WordVector.model = Word2Vec.load_word2vec_format('linguine/ops/glove.6B.50d.w2vformat.txt', binary=False)
+            WordVector.model = KeyedVectors.load_word2vec_format('linguine/ops/glove.6B.50d.w2vformat.txt',
+                                                                 binary=False)
 
     def run(self, data):
         results = []
