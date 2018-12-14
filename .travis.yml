@@ -3,8 +3,10 @@ language: python
 python:
   - "3.6"
 
+env:
+  - BOTO_CONFIG="/dev/null"
+
 before_install:
-  - export BOTO_CONFIG=/dev/null
   - wget -c "https://nlp.stanford.edu/data/glove.6B.zip" "http://nlp.stanford.edu/software/stanford-corenlp-full-2015-12-09.zip"
 
 install:
