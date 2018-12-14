@@ -1,4 +1,4 @@
-from gensim.models import KeyedVectors
+import gensim.downloader as api
 
 
 class WordVector:
@@ -6,8 +6,7 @@ class WordVector:
 
     def __init__(self):
         if WordVector.model is None:
-            WordVector.model = KeyedVectors.load_word2vec_format('linguine/ops/glove.6B.50d.w2vformat.txt',
-                                                                 binary=False)
+            WordVector.model = api.load('glove-wiki-gigaword-50')
 
     def run(self, data):
         results = []

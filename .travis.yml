@@ -7,7 +7,7 @@ env:
   - BOTO_CONFIG="/dev/null"
 
 before_install:
-  - wget -c "https://nlp.stanford.edu/data/glove.6B.zip" "http://nlp.stanford.edu/software/stanford-corenlp-full-2015-12-09.zip"
+  - wget -c "http://nlp.stanford.edu/software/stanford-corenlp-full-2015-12-09.zip"
 
 install:
   - pip install -r requirements.txt
@@ -16,10 +16,7 @@ install:
   - pip install ../stanford_corenlp_pywrapper
   - unzip -p stanford-corenlp-full-2015-12-09.zip stanford-corenlp-full-2015-12-09/stanford-corenlp-3.6.0-models.jar >../stanford_corenlp_pywrapper/stanford_corenlp_pywrapper/lib/stanford-corenlp-3.6.0-models.jar
   - rm stanford-corenlp-full-2015-12-09.zip
-  - unzip -p glove.6B.zip glove.6B.50d.txt >glove.6B.50d.txt
-  - python -m gensim.scripts.glove2word2vec --input glove.6B.50d.txt --output glove.6B.50d.w2vformat.txt
-  - rm glove.6B.zip glove.6B.50d.txt
-  - mv glove.6B.50d.w2vformat.txt linguine/ops/
+  - python -m gensim.downloader --download glove-wiki-gigaword-50
 
 script:
   - travis_wait nosetests
