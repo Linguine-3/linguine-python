@@ -36,7 +36,7 @@ class WordVector:
         return results
 
     def get_similarity(self, word1, word2):
-        return WordVector.model.similarity(word1, word2)
+        return float(WordVector.model.similarity(word1, word2))
 
     def get_most_similar(self, positive=None, negative=None):
         if positive is None:
