@@ -58,7 +58,7 @@ class Transaction:
                     'complete': False,
                     'time_created': self.time_created,
                     'analysis': self.operation}
-        return DatabaseAdapter.getDB().analyses.insert(analysis)
+        return DatabaseAdapter.getDB().analyses.insert_one(analysis).inserted_id
 
     def write_result(self, result, analysis_id):
         """Write result object to DB"""
@@ -69,7 +69,7 @@ class Transaction:
 
         print("Analysis " + str(analysis_id) + " complete. submitting record to DB")
 
-        DatabaseAdapter.getDB().analyses.update({'_id': ObjectId(analysis_id)}, analysis)
+        DatabaseAdapter.getDB().analyses.update_one({'_id': ObjectId(analysis_id)}, {'$set': analysis})
         self.is_finished = True
 
     def parse_json(self, json_data):
