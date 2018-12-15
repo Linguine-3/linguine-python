@@ -145,7 +145,7 @@ class Transaction:
             op_handler = linguine.operation_builder. \
                 get_operation_handler(self.operation)
 
-            print("Preforming core operation for analysis " + str(analysis_id) + " with op " + str(op_handler))
+            print("Performing core operation for analysis " + str(analysis_id) + " with op " + str(op_handler))
             self.write_result(op_handler.run(corpora), str(analysis_id))
 
             # write transaction time to console
