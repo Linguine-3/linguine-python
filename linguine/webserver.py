@@ -70,7 +70,7 @@ if __name__ == "__main__":
     try:
         application = tornado.web.Application([(r"/", MainHandler)])
         application.listen(5555)
-        tornado.ioloop.IOLoop.instance().start()
+        tornado.ioloop.IOLoop.current().start()
         for p in psutil.pids():
             if psutil.Process(p).name() in ["python3.4", "java"]:
                 for child in psutil.Process(p).children():

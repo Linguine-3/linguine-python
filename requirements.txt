@@ -6,4 +6,4 @@ psutil==5.4.8
 pymongo==3.7.2
 SPLAT-library==0.4.4
 textblob==0.15.2
-tornado==4.3
+tornado==5.1.1
