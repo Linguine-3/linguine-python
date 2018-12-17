@@ -11,7 +11,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
         self.test_data = [Corpus("0", "Test", "The quick brown fox jumped over the lazy dog.\n")]
 
     def test_run_pos(self):
-        self.op.analysisType = ['pos']
+        self.op.analysis_type = ['pos']
         results = self.op.run(self.test_data)
         desired_results = {
             'sentences': [{
@@ -55,7 +55,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
         self.assertEqual(results, desired_results)
 
     def test_run_ner(self):
-        self.op.analysisType = ['pos', 'ner']
+        self.op.analysis_type = ['pos', 'ner']
         results = self.op.run(self.test_data)
         desired_results = {
             'sentences': [{
@@ -105,7 +105,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
         self.assertEqual(results, desired_results)
 
     def test_run_sentiment(self):
-        self.op.analysisType = ['parse', 'sentiment']
+        self.op.analysis_type = ['parse', 'sentiment']
         results = self.op.run(self.test_data)
         desired_results = {
             'sentences': [{
@@ -187,7 +187,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
         self.assertEqual(results, desired_results)
 
     def test_run_parse(self):
-        self.op.analysisType = ['parse']
+        self.op.analysis_type = ['parse']
         results = self.op.run(self.test_data)
         desired_results = {
             'sentences': [{
@@ -232,7 +232,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
         self.assertEqual(results, desired_results)
 
     def test_run_coref(self):
-        self.op.analysisType = ['tokenize', 'ssplit', 'coref']
+        self.op.analysis_type = ['tokenize', 'ssplit', 'coref']
         results = self.op.run(self.test_data)
         desired_results = {
             'sentences': [{
@@ -278,7 +278,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
         self.assertEqual(results, desired_results)
 
     def test_run_relation(self):
-        self.op.analysisType = ['parse', 'relation']
+        self.op.analysis_type = ['parse', 'relation']
         results = self.op.run(self.test_data)
         desired_results = {
             'sentences': [{

@@ -10,6 +10,6 @@ class RemoveStopwords:
     def run(self, data):
         stopset = set(stopwords.words('english'))
         for corpus in data:
-            corpus.tokenized_contents = [w for w in corpus.tokenized_contents if not w in stopset]
+            corpus.tokenized_contents = [w for w in corpus.tokenized_contents if w not in stopset]
             corpus.contents = untokenize(corpus.tokenized_contents)
         return data

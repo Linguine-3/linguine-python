@@ -13,7 +13,7 @@ from pymongo import MongoClient
 class DatabaseAdapter:
 
     @staticmethod
-    def getDB():
+    def get_db():
 
         if 'NODE_ENV' in os.environ:
             # Look for Node environment to determine db name.

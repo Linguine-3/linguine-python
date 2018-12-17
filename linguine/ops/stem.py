@@ -13,11 +13,11 @@ class StemmerPorter:
     def run(self, data):
         porter = PorterStemmer()
         for corpus in data:
-            corpusString = ""
+            corpus_string = ""
             corpus.tokenized_contents = [porter.stem(word) for word in corpus.tokenized_contents]
             for index, word in enumerate(corpus.tokenized_contents):
-                corpusString += corpus.tokenized_contents[index] + " "
+                corpus_string += corpus.tokenized_contents[index] + " "
 
-            corpus.contents = corpusString
+            corpus.contents = corpus_string
 
         return data

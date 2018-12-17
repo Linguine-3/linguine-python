@@ -31,8 +31,8 @@ class MainHandler(tornado.web.RequestHandler):
             transaction = Transaction()
             self.transactions.append(transaction)
             transaction.parse_json(self.request.body)
-            transaction.read_corpora(transaction.corpora_ids)
-            transaction.calcETA(self.num_transactions_running)
+            transaction.read_corpora()
+            transaction.calc_eta(self.num_transactions_running)
             analysis_id = transaction.create_analysis_record()
 
             # Generate response to server before kicking off analysis
@@ -70,7 +70,6 @@ class MainHandler(tornado.web.RequestHandler):
             print(err.args)
             traceback.print_exc()
             print("===========end_error==================")
-            self.write(json.JSONEncoder().encode({'error': err}))
 
 
 def main():

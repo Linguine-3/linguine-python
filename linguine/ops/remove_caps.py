@@ -25,19 +25,19 @@ class RemoveCapsPreserveNNP:
             blob = TextBlob(corpus.contents)
             tags = blob.tags
             words = list()
-            wordCount = 0
-            tokenCount = 0
-            while (tokenCount < len(blob.tokens)):
-                if blob.tokens[tokenCount][0].isalpha():
-                    if tags[wordCount][1] != 'NNP':
-                        words.append(blob.words[wordCount].lower())
+            word_count = 0
+            token_count = 0
+            while token_count < len(blob.tokens):
+                if blob.tokens[token_count][0].isalpha():
+                    if tags[word_count][1] != 'NNP':
+                        words.append(blob.words[word_count].lower())
                     else:
-                        words.append(blob.words[wordCount])
-                    wordCount += 1
+                        words.append(blob.words[word_count])
+                    word_count += 1
                 else:
                     words[len(words) - 1] = ''.join(
-                        [words[len(words) - 1], blob.tokens[tokenCount]])
-                tokenCount += 1
+                        [words[len(words) - 1], blob.tokens[token_count]])
+                token_count += 1
             corpus.contents = (' '.join(words))
             results.append(corpus)
         return results

@@ -9,7 +9,7 @@ from linguine.transaction import Transaction
 class TransactionTest(unittest.TestCase):
 
     def setUp(self):
-        self.trans = Transaction('test')
+        self.trans = Transaction()
         self.test_data = {}
 
     def test_parse_json(self):

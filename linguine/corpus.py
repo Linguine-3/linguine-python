@@ -1,10 +1,10 @@
 class Corpus:
 
-    def __init__(self, id, title, contents, tags=[], tokenized_contents=None):
-        self.id = id
+    def __init__(self, corpus_id, title, contents, tags=None, tokenized_contents=None):
+        self.id = corpus_id
         self.title = title
         self.contents = contents
-        self.tags = tags
+        self.tags = tags if tags is not None else []
         self.tokenized_contents = tokenized_contents
 
     def to_dict(self):

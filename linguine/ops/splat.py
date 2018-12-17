@@ -127,8 +127,8 @@ class SplatComplexity:
         try:
             for corpus in data:
                 split_string = corpus.contents.split(" ")
-                temp_corpus = list(filter(("{SL}").__ne__, split_string))
-                temp_corpus = list(filter(("{sl}").__ne__, temp_corpus))
+                temp_corpus = list(filter("{SL}".__ne__, split_string))
+                temp_corpus = list(filter("{sl}".__ne__, temp_corpus))
                 temp_corpus_contents = " ".join(temp_corpus)
                 # print(corpus.contents)
                 temp_bubble = SPLAT(temp_corpus_contents)
@@ -179,9 +179,7 @@ class SplatPOSFrequencies:
                 temp_bubble = SPLAT(corpus.contents)
                 pos_tags = temp_bubble.pos()
                 pos_counts = temp_bubble.pos_counts()
-                for tuple in pos_tags:
-                    k = tuple[0]
-                    v = tuple[1]
+                for k, v in pos_tags:
                     if v in pos_parsed.keys():
                         if k not in pos_parsed[v]:
                             pos_parsed[v].append(k)
@@ -212,8 +210,8 @@ class SplatSyllables:
             for corpus in data:
                 # temp_bubble = SPLAT(corpus.contents)
                 split_string = re.split(r'\s|\n', corpus.contents)
-                temp_corpus = list(filter(("{SL}").__ne__, split_string))
-                temp_corpus = list(filter(("{sl}").__ne__, temp_corpus))
+                temp_corpus = list(filter("{SL}".__ne__, split_string))
+                temp_corpus = list(filter("{sl}".__ne__, temp_corpus))
                 temp_corpus_contents = " ".join(temp_corpus)
                 temp_bubble = SPLAT(temp_corpus_contents.rstrip('\n'))
                 temp_tokens = temp_bubble.tokens()

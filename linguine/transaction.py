@@ -12,7 +12,7 @@ from linguine.transaction_exception import TransactionException
 
 
 class Transaction:
-    def __init__(self, env=None):
+    def __init__(self):
         self.transaction_id = -1
         self.eta = None
         self.library = None
@@ -21,7 +21,6 @@ class Transaction:
         self.corpora_ids = []
         self.time_created = None
         self.corpora = []
-        # self.analysis_pool = Pool(processes=5)
         self.analysis_name = ""
         self.cleanups = []
         self.current_result = None
@@ -31,14 +30,14 @@ class Transaction:
                                        'stem_snowball', 'lemmatize_wordnet']
         self.is_finished = False
 
-    def read_corpora(self, corpora_ids):
+    def read_corpora(self):
         """Read in all corpora that are specified for a given transaction"""
         try:
             # load corpora from database
-            corpora = DatabaseAdapter.getDB().corpus
-            for id in self.corpora_ids:
-                corpus = corpora.find_one({"_id": ObjectId(id)})
-                self.corpora.append(Corpus(id, corpus["title"],
+            corpora = DatabaseAdapter.get_db().corpus
+            for corpus_id in self.corpora_ids:
+                corpus = corpora.find_one({"_id": ObjectId(corpus_id)})
+                self.corpora.append(Corpus(corpus_id, corpus["title"],
                                            corpus["contents"], corpus["tags"]))
         except (TypeError, InvalidId):
             raise TransactionException('Could not find corpus.')
@@ -58,18 +57,18 @@ class Transaction:
                     'complete': False,
                     'time_created': self.time_created,
                     'analysis': self.operation}
-        return DatabaseAdapter.getDB().analyses.insert_one(analysis).inserted_id
+        return DatabaseAdapter.get_db().analyses.insert_one(analysis).inserted_id
 
     def write_result(self, result, analysis_id):
         """Write result object to DB"""
-        analysis = DatabaseAdapter.getDB().analyses.find_one({"_id": ObjectId(analysis_id)})
+        analysis = DatabaseAdapter.get_db().analyses.find_one({"_id": ObjectId(analysis_id)})
 
         analysis['complete'] = True
         analysis['result'] = result
 
         print("Analysis " + str(analysis_id) + " complete. submitting record to DB")
 
-        DatabaseAdapter.getDB().analyses.update_one({'_id': ObjectId(analysis_id)}, {'$set': analysis})
+        DatabaseAdapter.get_db().analyses.update_one({'_id': ObjectId(analysis_id)}, {'$set': analysis})
         self.is_finished = True
 
     def parse_json(self, json_data):
@@ -99,23 +98,23 @@ class Transaction:
         except ValueError:
             raise TransactionException('Could not parse JSON.')
 
-    def calcETA(self, numTransactions):
+    def calc_eta(self, num_transactions):
         """
         Calculate the estimated time that a transaction will require to complete.
         this will be stored in the database record to display on the client
         """
-        time = 0
+        time_est = 0
         # For now, assume the transaction queue adds 30secs per transaction
-        time += numTransactions * 30
+        time_est += num_transactions * 30
         # Check which type of transaction is being preformed
         if "nlp" in self.operation:
             # A raw guess that a CoreNLP analysis will take 1 second per
             # 10 words processed.
-            time += (len(self.corpora[0].contents.split(" ")) / 10)
+            time_est += (len(self.corpora[0].contents.split(" ")) / 10)
 
-        self.eta = time
+        self.eta = time_est
 
-    def run(self, analysis_id, MainHandler):
+    def run(self, analysis_id, main_handler):
         """
         Execute the given analysis that has been fetched from the thread pool
         @args: MainHandler - Instance of parent class that keeps track of
@@ -125,22 +124,20 @@ class Transaction:
         try:
             start = time.clock()
             corpora = self.corpora
-            tokenized_corpora = []
-            analysis = {}
-            if not self.tokenizer == None and not self.tokenizer == '':
+            if self.tokenizer is not None and not self.tokenizer == '':
                 op_handler = linguine.operation_builder \
                     .get_operation_handler(self.tokenizer)
-                tokenized_corpora = op_handler.run(corpora)
+                op_handler.run(corpora)
             for cleanup in self.cleanups:
 
                 op_handler = linguine.operation_builder. \
                     get_operation_handler(cleanup)
                 corpora = op_handler.run(corpora)
                 # Corpora must be re tokenized after each cleanup
-                if not self.tokenizer == None and not self.tokenizer == '':
+                if self.tokenizer is not None and not self.tokenizer == '':
                     op_handler = linguine.operation_builder \
                         .get_operation_handler(self.tokenizer)
-                    tokenized_corpora = op_handler.run(corpora)
+                    op_handler.run(corpora)
 
             op_handler = linguine.operation_builder. \
                 get_operation_handler(self.operation)
@@ -151,7 +148,7 @@ class Transaction:
             # write transaction time to console
             print(self.analysis_name, ',', (time.clock() - start) * 1000)
             # Subtract one from analysis running count now that we're complete
-            MainHandler.num_transactions_running -= 1
+            main_handler.num_transactions_running -= 1
 
         except Exception as e:
             # print(e.error)

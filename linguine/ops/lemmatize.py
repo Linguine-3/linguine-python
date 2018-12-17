@@ -16,8 +16,8 @@ class LemmatizerWordNet:
         for corpus in data:
             tags = pos_tag(corpus.tokenized_contents)
             lemmatizer = WordNetLemmatizer()
-            corpus.tokenized_contents = [lemmatizer.lemmatize(word, self.getWordNetPartOfSpeech(tag))
-                                         if not self.getWordNetPartOfSpeech(tag) == None
+            corpus.tokenized_contents = [lemmatizer.lemmatize(word, self.get_word_net_part_of_speech(tag))
+                                         if self.get_word_net_part_of_speech(tag) is not None
                                          else word
                                          for (word, tag) in tags]
 
@@ -25,7 +25,7 @@ class LemmatizerWordNet:
 
         return data
 
-    def getWordNetPartOfSpeech(self, treebank_tag):
+    def get_word_net_part_of_speech(self, treebank_tag):
         """
         So the WordNetLemmatizer in NLTK expects POS tags in a different format than NLTK itself writes them.
         So this function does the conversion to make them compatible.

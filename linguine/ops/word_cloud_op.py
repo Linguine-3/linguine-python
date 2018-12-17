@@ -18,7 +18,7 @@ class WordCloudOp:
                 results.append({"term": term, "frequency": terms[term]})
 
             # sort results by term frequency
-            results.sort(key=lambda results: results['frequency'], reverse=True)
+            results.sort(key=lambda x: x['frequency'], reverse=True)
 
             return {"entities": [], "sentences": results}
 
