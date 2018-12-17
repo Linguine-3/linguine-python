@@ -151,7 +151,7 @@ class Transaction:
             # write transaction time to console
             print(self.analysis_name, ',', (time.clock() - start) * 1000)
             # Subtract one from analysis running count now that we're complete
-            MainHandler.numTransactionsRunning -= 1
+            MainHandler.num_transactions_running -= 1
 
         except Exception as e:
             # print(e.error)
