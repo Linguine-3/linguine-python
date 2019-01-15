@@ -63,8 +63,6 @@ def get_operation_handler(operation):
         return StanfordCoreNLP(['pos', 'ner'])
     elif operation == 'nlp-sentiment':
         return StanfordCoreNLP(['parse', 'sentiment'])
-    elif operation == 'nlp-parse':
-        return StanfordCoreNLP(['parse'])
     elif operation == 'nlp-coref':
         return StanfordCoreNLP(['tokenize', 'ssplit', 'coref'])
     elif operation == 'nlp-relation':

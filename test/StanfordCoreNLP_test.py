@@ -186,51 +186,6 @@ class StanfordCoreNLPTest(unittest.TestCase):
                      'representative': True}]}]}
         self.assertEqual(results, desired_results)
 
-    def test_run_parse(self):
-        self.op.analysis_type = ['parse']
-        results = self.op.run(self.test_data)
-        desired_results = {
-            'sentences': [{
-                'parse': '(ROOT (S (NP (DT The) (JJ quick) (JJ brown) (NN fox)) (VP (VBD jumped) (PP (IN over) (NP (DT the) (JJ lazy) (NN dog)))) (. .)))',
-                'deps_json': [{'tag': 'S', 'value': 'S', 'head': 0, 'id': 1},
-                              {'tag': 'NP', 'value': 'NP', 'head': 1, 'id': 2},
-                              {'tag': 'VP', 'value': 'VP', 'head': 1, 'id': 3},
-                              {'tag': '.', 'value': '.', 'head': 1, 'id': 4},
-                              {'tag': 'DT', 'value': 'DT', 'head': 2, 'id': 5},
-                              {'tag': 'JJ', 'value': 'JJ', 'head': 2, 'id': 6},
-                              {'tag': 'JJ', 'value': 'JJ', 'head': 2, 'id': 7},
-                              {'tag': 'NN', 'value': 'NN', 'head': 2, 'id': 8},
-                              {'tag': '', 'value': 'The', 'head': 5, 'id': 9},
-                              {'tag': '', 'value': 'quick', 'head': 6, 'id': 10},
-                              {'tag': '', 'value': 'brown', 'head': 7, 'id': 11},
-                              {'tag': '', 'value': 'fox', 'head': 8, 'id': 12},
-                              {'tag': 'VBD', 'value': 'VBD', 'head': 3, 'id': 13},
-                              {'tag': 'PP', 'value': 'PP', 'head': 3, 'id': 14},
-                              {'tag': '', 'value': 'jumped', 'head': 13, 'id': 15},
-                              {'tag': 'IN', 'value': 'IN', 'head': 14, 'id': 16},
-                              {'tag': 'NP', 'value': 'NP', 'head': 14, 'id': 17},
-                              {'tag': '', 'value': 'over', 'head': 16, 'id': 18},
-                              {'tag': 'DT', 'value': 'DT', 'head': 17, 'id': 19},
-                              {'tag': 'JJ', 'value': 'JJ', 'head': 17, 'id': 20},
-                              {'tag': 'NN', 'value': 'NN', 'head': 17, 'id': 21},
-                              {'tag': '', 'value': 'the', 'head': 19, 'id': 22},
-                              {'tag': '', 'value': 'lazy', 'head': 20, 'id': 23},
-                              {'tag': '', 'value': 'dog', 'head': 21, 'id': 24},
-                              {'tag': '', 'value': '.', 'head': 4, 'id': 25}],
-                'tokens': [{'token': 'The'}, {'token': 'quick'}, {'token': 'brown'},
-                           {'token': 'fox'}, {'token': 'jumped'}, {'token': 'over'},
-                           {'token': 'the'}, {'token': 'lazy'}, {'token': 'dog'},
-                           {'token': '.'}]}],
-            'entities': [
-                {'entityid': 1, 'mentions': [
-                    {'number': 'SINGULAR', 'gender': 'MALE', 'mentionid': 1, 'tokspan_in_sentence': [0, 4], 'head': 3,
-                     'representative': True, 'mentiontype': 'NOMINAL', 'animacy': 'ANIMATE', 'sentence': 0}]},
-                {'entityid': 2, 'mentions': [
-                    {'number': 'SINGULAR', 'gender': 'UNKNOWN', 'mentionid': 2, 'tokspan_in_sentence': [6, 9],
-                     'head': 8, 'representative': True, 'mentiontype': 'NOMINAL', 'animacy': 'ANIMATE',
-                     'sentence': 0}]}]}
-        self.assertEqual(results, desired_results)
-
     def test_run_coref(self):
         self.op.analysis_type = ['tokenize', 'ssplit', 'coref']
         results = self.op.run(self.test_data)
