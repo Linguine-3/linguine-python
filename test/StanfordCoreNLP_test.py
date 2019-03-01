@@ -106,16 +106,16 @@ class StanfordCoreNLPTest(unittest.TestCase):
                               {'value': 'lazy', 'head': 25, 'tag': '', 'id': 27},
                               {'value': 'dog', 'head': 26, 'tag': '', 'id': 28},
                               {'value': '.', 'head': 15, 'tag': '', 'id': 29}],
-                'tokens': [{'sentiment': 'Negative', 'token': 'The', 'sentimentValue': 1},
-                           {'sentiment': 'Negative', 'token': 'quick', 'sentimentValue': 1},
-                           {'sentiment': 'Negative', 'token': 'brown', 'sentimentValue': 1},
-                           {'sentiment': 'Negative', 'token': 'fox', 'sentimentValue': 1},
-                           {'sentiment': 'Negative', 'token': 'jumped', 'sentimentValue': 1},
-                           {'sentiment': 'Negative', 'token': 'over', 'sentimentValue': 1},
-                           {'sentiment': 'Negative', 'token': 'the', 'sentimentValue': 1},
-                           {'sentiment': 'Negative', 'token': 'lazy', 'sentimentValue': 1},
-                           {'sentiment': 'Negative', 'token': 'dog', 'sentimentValue': 1},
-                           {'sentiment': 'Negative', 'token': '.', 'sentimentValue': 1}]}]}
+                'tokens': [{'sentiment': 'Neutral', 'token': 'The'},
+                           {'sentiment': 'Neutral', 'token': 'quick'},
+                           {'sentiment': 'Neutral', 'token': 'brown'},
+                           {'sentiment': 'Neutral', 'token': 'fox'},
+                           {'sentiment': 'Neutral', 'token': 'jumped'},
+                           {'sentiment': 'Neutral', 'token': 'over'},
+                           {'sentiment': 'Neutral', 'token': 'the'},
+                           {'sentiment': 'Negative', 'token': 'lazy'},
+                           {'sentiment': 'Positive', 'token': 'dog'},
+                           {'sentiment': 'Neutral', 'token': '.'}]}]}
         self.assertEqual(results, desired_results)
 
     def test_run_coref(self):

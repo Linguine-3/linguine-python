@@ -61,8 +61,7 @@ class StanfordCoreNLP:
                     if not any(x in analysis_types for x in ['coref', 'pos', 'relation']):
                         for atype in analysis_types:
                             if atype is "sentiment":
-                                word[atype] = sentence_res[atype]
-                                word["sentimentValue"] = sentence_res["sentimentValue"]
+                                word['sentiment'] = sentence_res['sentiments'][index]
                             elif atype not in ["parse", "relation"]:
                                 word[atype] = sentence_res[atype][index]
 
