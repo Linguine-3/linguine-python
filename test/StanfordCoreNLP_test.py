@@ -108,31 +108,6 @@ class StanfordCoreNLPTest(unittest.TestCase):
         desired_results = {
             'sentences': [{
                 'sentiment': 'Negative',
-                'deps_json': [{'value': 'S', 'head': 0, 'tag': 'S', 'id': 1},
-                              {'value': 'NP', 'head': 1, 'tag': 'NP', 'id': 2},
-                              {'value': 'VP', 'head': 1, 'tag': 'VP', 'id': 3},
-                              {'value': '.', 'head': 1, 'tag': '.', 'id': 4},
-                              {'value': 'DT', 'head': 2, 'tag': 'DT', 'id': 5},
-                              {'value': 'JJ', 'head': 2, 'tag': 'JJ', 'id': 6},
-                              {'value': 'JJ', 'head': 2, 'tag': 'JJ', 'id': 7},
-                              {'value': 'NN', 'head': 2, 'tag': 'NN', 'id': 8},
-                              {'value': 'The', 'head': 5, 'tag': '', 'id': 9},
-                              {'value': 'quick', 'head': 6, 'tag': '', 'id': 10},
-                              {'value': 'brown', 'head': 7, 'tag': '', 'id': 11},
-                              {'value': 'fox', 'head': 8, 'tag': '', 'id': 12},
-                              {'value': 'VBD', 'head': 3, 'tag': 'VBD', 'id': 13},
-                              {'value': 'PP', 'head': 3, 'tag': 'PP', 'id': 14},
-                              {'value': 'jumped', 'head': 13, 'tag': '', 'id': 15},
-                              {'value': 'IN', 'head': 14, 'tag': 'IN', 'id': 16},
-                              {'value': 'NP', 'head': 14, 'tag': 'NP', 'id': 17},
-                              {'value': 'over', 'head': 16, 'tag': '', 'id': 18},
-                              {'value': 'DT', 'head': 17, 'tag': 'DT', 'id': 19},
-                              {'value': 'JJ', 'head': 17, 'tag': 'JJ', 'id': 20},
-                              {'value': 'NN', 'head': 17, 'tag': 'NN', 'id': 21},
-                              {'value': 'the', 'head': 19, 'tag': '', 'id': 22},
-                              {'value': 'lazy', 'head': 20, 'tag': '', 'id': 23},
-                              {'value': 'dog', 'head': 21, 'tag': '', 'id': 24},
-                              {'value': '.', 'head': 4, 'tag': '', 'id': 25}],
                 'sentimentValue': 1,
                 'parse': '(ROOT (S (NP (DT The) (JJ quick) (JJ brown) (NN fox)) (VP (VBD jumped) (PP (IN over) (NP (DT the) (JJ lazy) (NN dog)))) (. .)))',
                 'sentiment_json': [{'value': 'ROOT', 'head': 0, 'tag': 1, 'id': 1},
@@ -173,15 +148,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
                            {'sentiment': 'Negative', 'token': 'the', 'sentimentValue': 1},
                            {'sentiment': 'Negative', 'token': 'lazy', 'sentimentValue': 1},
                            {'sentiment': 'Negative', 'token': 'dog', 'sentimentValue': 1},
-                           {'sentiment': 'Negative', 'token': '.', 'sentimentValue': 1}]}],
-            'entities': [
-                {'entityid': 1, 'mentions': [
-                    {'head': 3, 'number': 'SINGULAR', 'mentiontype': 'NOMINAL', 'tokspan_in_sentence': [0, 4],
-                     'mentionid': 1, 'sentence': 0, 'animacy': 'ANIMATE', 'gender': 'MALE', 'representative': True}]},
-                {'entityid': 2, 'mentions': [
-                    {'head': 8, 'number': 'SINGULAR', 'mentiontype': 'NOMINAL', 'tokspan_in_sentence': [6, 9],
-                     'mentionid': 2, 'sentence': 0, 'animacy': 'ANIMATE', 'gender': 'UNKNOWN',
-                     'representative': True}]}]}
+                           {'sentiment': 'Negative', 'token': '.', 'sentimentValue': 1}]}]}
         self.assertEqual(results, desired_results)
 
     def test_run_coref(self):

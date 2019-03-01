@@ -52,7 +52,7 @@ class StanfordCoreNLP:
         """
         for corpus in data:
             res = StanfordCoreNLP.proc.parse_doc(corpus.contents)
-            print(res)
+            # print(res)
             sentences = []
             for sentence_res in res["sentences"]:
                 words = []
@@ -85,5 +85,9 @@ class StanfordCoreNLP:
         if self.analysis_type == 'pos':
             return {'sentences': [{'tokens': [{'token': token['token']} for token in sentence['tokens']],
                                    'deps_json': sentence['deps_json']} for sentence in sentences]}
+        elif self.analysis_type == 'sentiment':
+            for sentence in sentences:
+                del sentence['deps_json']
+            return {'sentences': sentences}
         else:
             return {"sentences": sentences, "entities": res["entities"]}
