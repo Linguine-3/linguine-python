@@ -15,11 +15,16 @@ class StanfordCoreNLPTest(unittest.TestCase):
         results = self.op.run(self.test_data)
         desired_results = {
             'sentences': [{
-                'tokens': [{'pos': 'DT', 'token': 'The'}, {'pos': 'JJ', 'token': 'quick'},
-                           {'pos': 'JJ', 'token': 'brown'}, {'pos': 'NN', 'token': 'fox'},
-                           {'pos': 'VBD', 'token': 'jumped'}, {'pos': 'IN', 'token': 'over'},
-                           {'pos': 'DT', 'token': 'the'}, {'pos': 'JJ', 'token': 'lazy'},
-                           {'pos': 'NN', 'token': 'dog'}, {'pos': '.', 'token': '.'}],
+                'tokens': [{'token': 'The'},
+                           {'token': 'quick'},
+                           {'token': 'brown'},
+                           {'token': 'fox'},
+                           {'token': 'jumped'},
+                           {'token': 'over'},
+                           {'token': 'the'},
+                           {'token': 'lazy'},
+                           {'token': 'dog'},
+                           {'token': '.'}],
                 'deps_json': [{'id': 1, 'tag': 'S', 'head': 0, 'value': 'S'},
                               {'id': 2, 'tag': 'NP', 'head': 1, 'value': 'NP'},
                               {'id': 3, 'tag': 'VP', 'head': 1, 'value': 'VP'},
@@ -44,14 +49,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
                               {'id': 22, 'tag': '', 'head': 19, 'value': 'the'},
                               {'id': 23, 'tag': '', 'head': 20, 'value': 'lazy'},
                               {'id': 24, 'tag': '', 'head': 21, 'value': 'dog'},
-                              {'id': 25, 'tag': '', 'head': 4, 'value': '.'}]}],
-            'entities': [
-                {'entityid': 1, 'mentions': [
-                    {'mentiontype': 'NOMINAL', 'tokspan_in_sentence': [0, 4], 'sentence': 0, 'animacy': 'ANIMATE',
-                     'number': 'SINGULAR', 'gender': 'MALE', 'representative': True, 'head': 3, 'mentionid': 1}]},
-                {'entityid': 2, 'mentions': [
-                    {'mentiontype': 'NOMINAL', 'tokspan_in_sentence': [6, 9], 'sentence': 0, 'animacy': 'ANIMATE',
-                     'number': 'SINGULAR', 'gender': 'UNKNOWN', 'representative': True, 'head': 8, 'mentionid': 2}]}]}
+                              {'id': 25, 'tag': '', 'head': 4, 'value': '.'}]}]}
         self.assertEqual(results, desired_results)
 
     def test_run_ner(self):

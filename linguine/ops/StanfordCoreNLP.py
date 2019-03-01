@@ -82,4 +82,8 @@ class StanfordCoreNLP:
                 sentence['deps_json'] = json.loads(sentence_res['deps_json'])
                 sentences.append(sentence)
 
-        return {"sentences": sentences, "entities": res["entities"]}
+        if self.analysis_type == 'pos':
+            return {'sentences': [{'tokens': [{'token': token['token']} for token in sentence['tokens']],
+                                   'deps_json': sentence['deps_json']} for sentence in sentences]}
+        else:
+            return {"sentences": sentences, "entities": res["entities"]}
