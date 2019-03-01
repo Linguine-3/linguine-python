@@ -35,7 +35,7 @@ class StanfordCoreNLP:
         elif analysis_type == 'sentiment':
             return ['parse', 'sentiment']
         elif analysis_type == 'coref':
-            return ['tokenize', 'ssplit', 'coref']
+            return ['coref']
         elif analysis_type == 'relation':
             return ['parse', 'relation']
         else:
