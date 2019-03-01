@@ -57,13 +57,13 @@ class StanfordCoreNLP:
             for sentence_res in res["sentences"]:
                 words = []
                 for index, token in enumerate(sentence_res["tokens"]):
-                    word = {"token": sentence_res["tokens"][index]}
+                    word = {"token": token}
                     if not any(x in analysis_types for x in ['coref', 'pos', 'relation']):
                         for atype in analysis_types:
                             if atype is "sentiment":
                                 word[atype] = sentence_res[atype]
                                 word["sentimentValue"] = sentence_res["sentimentValue"]
-                            elif atype is not "parse" and atype is not "relation":
+                            elif atype not in ["parse", "relation"]:
                                 word[atype] = sentence_res[atype][index]
 
                     words.append(word)
