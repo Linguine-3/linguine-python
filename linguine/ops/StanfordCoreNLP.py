@@ -71,7 +71,7 @@ class StanfordCoreNLP:
                 if "sentiment" in analysis_types:
                     sentence['sentiment'] = sentence_res['sentiment']
                     sentence['sentimentValue'] = sentence_res['sentimentValue']
-                    sentence['sentiment_json'] = json.loads(sentence_res['sentiment_json'])
+                    sentence['tree_json'] = json.loads(sentence_res['sentiment_json'])
 
                 if "parse" in analysis_types:
                     sentence["parse"] = sentence_res["parse"]
@@ -82,9 +82,14 @@ class StanfordCoreNLP:
                 sentence['deps_json'] = json.loads(sentence_res['deps_json'])
                 sentences.append(sentence)
 
+        if self.analysis_type in ['coref', 'ner', 'relation']:
+            for sentence in sentences:
+                sentence['tree_json'] = sentence['deps_json']
+                del sentence['deps_json']
+
         if self.analysis_type == 'pos':
             return {'sentences': [{'tokens': [{'token': token['token']} for token in sentence['tokens']],
-                                   'deps_json': sentence['deps_json']} for sentence in sentences]}
+                                   'tree_json': sentence['deps_json']} for sentence in sentences]}
         elif self.analysis_type == 'sentiment':
             for sentence in sentences:
                 del sentence['deps_json']
