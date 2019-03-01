@@ -11,7 +11,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
         self.test_data = [Corpus("0", "Test", "The quick brown fox jumped over the lazy dog.\n")]
 
     def test_run_pos(self):
-        self.op.analysis_type = ['pos']
+        self.op.analysis_type = 'pos'
         results = self.op.run(self.test_data)
         desired_results = {
             'sentences': [{
@@ -55,7 +55,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
         self.assertEqual(results, desired_results)
 
     def test_run_ner(self):
-        self.op.analysis_type = ['pos', 'ner']
+        self.op.analysis_type = 'ner'
         results = self.op.run(self.test_data)
         desired_results = {
             'sentences': [{
@@ -105,7 +105,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
         self.assertEqual(results, desired_results)
 
     def test_run_sentiment(self):
-        self.op.analysis_type = ['parse', 'sentiment']
+        self.op.analysis_type = 'sentiment'
         results = self.op.run(self.test_data)
         desired_results = {
             'sentences': [{
@@ -187,7 +187,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
         self.assertEqual(results, desired_results)
 
     def test_run_coref(self):
-        self.op.analysis_type = ['tokenize', 'ssplit', 'coref']
+        self.op.analysis_type = 'coref'
         results = self.op.run(self.test_data)
         desired_results = {
             'sentences': [{
@@ -233,7 +233,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
         self.assertEqual(results, desired_results)
 
     def test_run_relation(self):
-        self.op.analysis_type = ['parse', 'relation']
+        self.op.analysis_type = 'relation'
         results = self.op.run(self.test_data)
         desired_results = {
             'sentences': [{

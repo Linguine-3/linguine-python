@@ -1,15 +1,45 @@
+"""
+Performs some CoreNLP operations as a proof of concept for the library.
+"""
+
 import json
 import os
-
-"""
-Performs some core NLP operations as a proof of concept for the library.
-"""
 
 from stanford_corenlp_pywrapper import CoreNLP
 
 
 class StanfordCoreNLP:
     proc = None
+
+    def __init__(self, analysis_type):
+        self.analysis_type = analysis_type
+
+        # print("ANALYSIS: " + str(analysisType))
+
+        if StanfordCoreNLP.proc is None:
+            StanfordCoreNLP.proc = CoreNLP(configdict={
+                'annotators': 'tokenize, ssplit, pos, lemma, ner, parse, sentiment, dcoref, relation, natlog, openie'},
+                corenlp_jars=[os.path.join(os.path.dirname(__file__),
+                                           '../../../stanford_corenlp_pywrapper/stanford_corenlp_pywrapper/lib/*')])
+
+    def run(self, data):
+        result = self.json_cleanup(data, self.type_to_annotator(self.analysis_type))
+        # print(result)
+        return result
+
+    def type_to_annotator(self, analysis_type):
+        if analysis_type == 'pos':
+            return ['pos']
+        elif analysis_type == 'ner':
+            return ['pos', 'ner']
+        elif analysis_type == 'sentiment':
+            return ['parse', 'sentiment']
+        elif analysis_type == 'coref':
+            return ['tokenize', 'ssplit', 'coref']
+        elif analysis_type == 'relation':
+            return ['parse', 'relation']
+        else:
+            return None
 
     def json_cleanup(self, data, analysis_types):
         """
@@ -53,19 +83,3 @@ class StanfordCoreNLP:
                 sentences.append(sentence)
 
         return {"sentences": sentences, "entities": res["entities"]}
-
-    def __init__(self, analysis_type):
-        self.analysis_type = analysis_type
-
-        # print("ANALYSIS: " + str(analysisType))
-
-        if StanfordCoreNLP.proc is None:
-            StanfordCoreNLP.proc = CoreNLP(configdict={
-                'annotators': 'tokenize, ssplit, pos, lemma, ner, parse, sentiment, dcoref, relation, natlog, openie'},
-                corenlp_jars=[os.path.join(os.path.dirname(__file__),
-                                           '../../../stanford_corenlp_pywrapper/stanford_corenlp_pywrapper/lib/*')])
-
-    def run(self, data):
-        result = self.json_cleanup(data, self.analysis_type)
-        # print(result)
-        return result

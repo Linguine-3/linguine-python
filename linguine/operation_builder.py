@@ -58,15 +58,15 @@ def get_operation_handler(operation):
     elif operation == 'word_tokenize_stanford':
         return WordTokenizeStanford()
     elif operation == 'nlp-pos':
-        return StanfordCoreNLP(['pos'])
+        return StanfordCoreNLP('pos')
     elif operation == 'nlp-ner':
-        return StanfordCoreNLP(['pos', 'ner'])
+        return StanfordCoreNLP('ner')
     elif operation == 'nlp-sentiment':
-        return StanfordCoreNLP(['parse', 'sentiment'])
+        return StanfordCoreNLP('sentiment')
     elif operation == 'nlp-coref':
-        return StanfordCoreNLP(['tokenize', 'ssplit', 'coref'])
+        return StanfordCoreNLP('coref')
     elif operation == 'nlp-relation':
-        return StanfordCoreNLP(['parse', 'relation'])
+        return StanfordCoreNLP('relation')
     elif operation == 'splat-disfluency':
         print("YOU GOT SPLATTED")
         return SplatDisfluency()
