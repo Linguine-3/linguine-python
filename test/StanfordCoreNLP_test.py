@@ -173,16 +173,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
                     {'object': {'end': 9, 'start': 7, 'lemma': 'lazy dog'},
                      'relation': {'end': 6, 'start': 4, 'lemma': 'jump over'},
                      'subject': {'end': 4, 'start': 3, 'lemma': 'fox'}}],
-                'parse': '(ROOT (S (NP (DT The) (JJ quick) (JJ brown) (NN fox)) (VP (VBD jumped) (PP (IN over) (NP (DT the) (JJ lazy) (NN dog)))) (. .)))'}],
-            'entities': [
-                {'entityid': 1, 'mentions': [
-                    {'mentionid': 1, 'sentence': 0, 'mentiontype': 'NOMINAL', 'representative': True,
-                     'tokspan_in_sentence': [0, 4], 'head': 3, 'animacy': 'ANIMATE', 'number': 'SINGULAR',
-                     'gender': 'MALE'}]},
-                {'entityid': 2, 'mentions': [
-                    {'mentionid': 2, 'sentence': 0, 'mentiontype': 'NOMINAL', 'representative': True,
-                     'tokspan_in_sentence': [6, 9], 'head': 8, 'animacy': 'ANIMATE', 'number': 'SINGULAR',
-                     'gender': 'UNKNOWN'}]}]}
+                'parse': '(ROOT (S (NP (DT The) (JJ quick) (JJ brown) (NN fox)) (VP (VBD jumped) (PP (IN over) (NP (DT the) (JJ lazy) (NN dog)))) (. .)))'}]}
         self.assertEqual(results, desired_results)
 
 
