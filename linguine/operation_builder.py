@@ -1,4 +1,3 @@
-from linguine.ops.StanfordCoreNLP import StanfordCoreNLP
 from linguine.ops.bigram_array import BigramArray
 from linguine.ops.char_ngrams import CharNgrams
 from linguine.ops.lemmatize import LemmatizerWordNet
@@ -14,6 +13,7 @@ from linguine.ops.remove_stopwords import RemoveStopwords
 from linguine.ops.sentence_tokenize import SentenceTokenize
 from linguine.ops.splat import SplatComplexity, SplatDisfluency, SplatNGrams, SplatPOSFrequencies, SplatPronouns, \
     SplatSyllables
+from linguine.ops.stanford_core_nlp import StanfordCoreNLP
 from linguine.ops.stem import StemmerPorter
 from linguine.ops.tfidf import Tfidf
 from linguine.ops.topic_model import TopicModel

@@ -1,7 +1,7 @@
 import unittest
 
 from linguine.corpus import Corpus
-from linguine.ops.StanfordCoreNLP import StanfordCoreNLP
+from linguine.ops.stanford_core_nlp import StanfordCoreNLP
 
 
 class StanfordCoreNLPTest(unittest.TestCase):
