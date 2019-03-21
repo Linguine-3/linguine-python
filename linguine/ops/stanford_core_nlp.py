@@ -3,7 +3,7 @@ Performs some CoreNLP operations as a proof of concept for the library.
 """
 
 import json
-import pprint
+import re
 
 from stanfordcorenlp import StanfordCoreNLP as CoreNLP
 from tatsu import parse
@@ -42,40 +42,45 @@ class StanfordCoreNLP:
             res = json.loads(res)
             print(res)
             sentences = []
-            for sentence_res in res["sentences"]:
+            for sentence_res in res['sentences']:
                 words = []
-                for index, token in enumerate(sentence_res["tokens"]):
-                    word = {"token": token}
+                for token in sentence_res['tokens']:
+                    word = {'token': token['originalText']}
 
-                    if analysis_type == "sentiment":
-                        word['sentiment'] = sentence_res['sentiments'][index]
-                    elif analysis_type == 'ner':
-                        word['ner'] = sentence_res['ner'][index]
+                    if analysis_type == 'ner':
+                        word['ner'] = token['ner']
 
                     words.append(word)
 
                 sentence = {'tokens': words}
 
-                if analysis_type == "sentiment":
+                if analysis_type == 'sentiment':
                     sentence['sentiment'] = sentence_res['sentiment']
                     sentence['sentimentValue'] = sentence_res['sentimentValue']
-                    sentence['tree_json'] = json.loads(sentence_res['sentiment_json'])
+                    sentence['tree_json'] = TreeStringToList.convert('sentiment', sentence_res['sentimentTree'])
+
+                    # Extract sentiments from tree on a per-token level
+                    value_to_name = {0: 'Very negative', 1: 'Negative', 2: 'Neutral', 3: 'Positive', 4: 'Very positive'}
+                    sentiment_values = map(int, re.findall(r'\(\S+\|sentiment=(\d)\|prob=\d+\.\d+ \S+\)',
+                                                           sentence_res['sentimentTree']))
+                    for token, value in zip(words, sentiment_values):
+                        token['sentiment'] = value_to_name[value]
 
                 if analysis_type in ['sentiment', 'relation']:
-                    sentence["parse"] = sentence_res["parse"]
+                    sentence['parse'] = re.sub(r'\s+', ' ', sentence_res['parse'])
 
-                if analysis_type == "relation":
-                    sentence['relations'] = json.loads(sentence_res['relations'])
+                if analysis_type == 'relation':
+                    sentence['relations'] = sentence_res['openie']
 
                 if analysis_type == 'pos':
-                    sentence['tree_json'] = json.loads(sentence_res['deps_json'])
+                    sentence['tree_json'] = TreeStringToList.convert('parse', sentence_res['parse'])
 
                 sentences.append(sentence)
 
         if analysis_type == 'coref':
-            return {'sentences': sentences, "entities": res["entities"]}
+            return {'sentences': sentences, 'entities': res['corefs']}
         else:
-            return {"sentences": sentences}
+            return {'sentences': sentences}
 
 
 class TreeStringToList:
@@ -106,21 +111,18 @@ class TreeStringToList:
     def convert(result_type, text):
         text = text.replace('(', ' ( ').replace(')', ' ) ')
         if result_type == 'parse':
+            text = text[7:-2]
             ast = parse(TreeStringToList.PARSE_GRAMMAR, text)
-            return TreeStringToList.flatten_parse_ast(ast)
+            tree = TreeStringToList.flatten_parse_ast(ast)
         elif result_type == 'sentiment':
             text = text.replace('|', ' ').replace('=', ' ')
             ast = parse(TreeStringToList.SENTIMENT_GRAMMAR, text)
-            return TreeStringToList.flatten_sentiment_ast(ast)
+            tree = TreeStringToList.flatten_sentiment_ast(ast)
         else:
             raise NotImplementedError(f'Analysis type "{result_type}" not implemented')
 
-    @staticmethod
-    def parse_tree(grammar, flattener, text):
-        text = text.replace('(', ' ( ').replace(')', ' ) ').replace('|', ' ').replace('=', ' ')
-        ast = parse(grammar, text)
-        pprint.pprint(ast, indent=2, width=20)
-        pprint.pprint(flattener(ast), indent=2, width=20)
+        tree.sort(key=lambda x: x['id'])
+        return tree
 
     @staticmethod
     def flatten_parse_ast(ast, nodes=None, head=None):
@@ -131,18 +133,16 @@ class TreeStringToList:
 
         prev_ids = [node['id'] for node in nodes]
         node_id = max(prev_ids) + 1 if prev_ids else head + 1
+
+        nodes.append({'id': node_id, 'tag': ast['pos'], 'head': head, 'value': ast['pos']})
+
         if isinstance(ast['value'], str):
-            tag = ''
-            value = ast['value']
+            nodes.append({'id': node_id + 1, 'tag': '', 'head': node_id, 'value': ast['value']})
         elif isinstance(ast['value'], list):
-            tag = ast['pos']
-            value = ast['pos']
             for child in ast['value']:
                 TreeStringToList.flatten_parse_ast(child, nodes, node_id)
         else:
             raise RuntimeError(f'Unexpected type "{ast["value"]}"')
-
-        nodes.append({'id': node_id, 'tag': tag, 'head': head, 'value': value})
 
         return nodes
 
@@ -155,6 +155,9 @@ class TreeStringToList:
 
         prev_ids = [node['id'] for node in nodes]
         node_id = max(prev_ids) + 1 if prev_ids else head + 1
+
+        nodes.append({'id': node_id, 'tag': int(ast['tag']['sentiment']), 'head': head, 'value': ast['tag']['pos']})
+
         if isinstance(ast['value'], str):
             nodes.append({'id': node_id + 1, 'tag': '', 'head': node_id, 'value': ast['value']})
         elif isinstance(ast['value'], list):
@@ -162,7 +165,5 @@ class TreeStringToList:
                 TreeStringToList.flatten_sentiment_ast(child, nodes, node_id)
         else:
             raise RuntimeError(f'Unexpected type "{ast["value"]}"')
-
-        nodes.append({'id': node_id, 'tag': ast['tag']['sentiment'], 'head': head, 'value': ast['tag']['pos']})
 
         return nodes
