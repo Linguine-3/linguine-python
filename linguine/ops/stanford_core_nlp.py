@@ -78,7 +78,29 @@ class StanfordCoreNLP:
                 sentences.append(sentence)
 
         if analysis_type == 'coref':
-            return {'sentences': sentences, 'entities': res['corefs']}
+            entities = []
+            for entityid, entity in res['corefs'].items():
+                mentions = []
+                for instance in entity:
+                    mention = {
+                        'mentionid': instance['id'],
+                        'sentence': instance['sentNum'] - 1,
+                        'tokspan_in_sentence': [
+                            instance['startIndex'] - 1,
+                            instance['endIndex'] - 1
+                        ],
+                        'head': instance['headIndex'] - 1,
+                        'mentiontype': instance['type'],
+                        'animacy': instance['animacy'],
+                        'gender': instance['gender'],
+                        'number': instance['number'],
+                        'representative': instance['isRepresentativeMention']
+                    }
+                    mentions.append(mention)
+
+                entities.append({'mentions': mentions, 'entityid': int(entityid)})
+
+            return {'sentences': sentences, 'entities': entities}
         else:
             return {'sentences': sentences}
 
