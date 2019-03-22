@@ -25,7 +25,7 @@ class StanfordCoreNLP:
 
     def run(self, data):
         result = self.json_cleanup(data, self.analysis_type)
-        print(result)
+        # print(result)
         return result
 
     def json_cleanup(self, data, analysis_type):
@@ -40,7 +40,7 @@ class StanfordCoreNLP:
         for corpus in data:
             res = StanfordCoreNLP.proc.annotate(corpus.contents, properties=StanfordCoreNLP.props)
             res = json.loads(res)
-            print(res)
+            # print(res)
             sentences = []
             for sentence_res in res['sentences']:
                 words = []
