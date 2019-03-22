@@ -56,7 +56,7 @@ class StanfordCoreNLP:
 
                 if analysis_type == 'sentiment':
                     sentence['sentiment'] = sentence_res['sentiment']
-                    sentence['sentimentValue'] = sentence_res['sentimentValue']
+                    sentence['sentimentValue'] = int(sentence_res['sentimentValue'])
                     sentence['tree_json'] = TreeStringToList.convert('sentiment', sentence_res['sentimentTree'])
 
                     # Extract sentiments from tree on a per-token level
@@ -70,7 +70,28 @@ class StanfordCoreNLP:
                     sentence['parse'] = re.sub(r'\s+', ' ', sentence_res['parse'])
 
                 if analysis_type == 'relation':
-                    sentence['relations'] = sentence_res['openie']
+                    relations = []
+                    for relation in sentence_res['openie']:
+                        new_relation = {
+                            'subject': {
+                                'lemma': relation['subject'],
+                                'start': relation['subjectSpan'][0],
+                                'end': relation['subjectSpan'][1]
+                            },
+                            'relation': {
+                                'lemma': relation['relation'],
+                                'start': relation['relationSpan'][0],
+                                'end': relation['relationSpan'][1]
+                            },
+                            'object': {
+                                'lemma': relation['object'],
+                                'start': relation['objectSpan'][0],
+                                'end': relation['objectSpan'][1]
+                            },
+                        }
+                        relations.append(new_relation)
+
+                    sentence['relations'] = relations
 
                 if analysis_type == 'pos':
                     sentence['tree_json'] = TreeStringToList.convert('parse', sentence_res['parse'])
@@ -79,7 +100,7 @@ class StanfordCoreNLP:
 
         if analysis_type == 'coref':
             entities = []
-            for entityid, entity in res['corefs'].items():
+            for entity_id, entity in res['corefs'].items():
                 mentions = []
                 for instance in entity:
                     mention = {
@@ -98,7 +119,7 @@ class StanfordCoreNLP:
                     }
                     mentions.append(mention)
 
-                entities.append({'mentions': mentions, 'entityid': int(entityid)})
+                entities.append({'mentions': mentions, 'entityid': int(entity_id)})
 
             return {'sentences': sentences, 'entities': entities}
         else:
