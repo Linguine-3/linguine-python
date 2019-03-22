@@ -84,5 +84,5 @@ class TopicModel:
         for n, topic in lda_model.show_topics(num_topics=self.num_topics, formatted=False):
             topics[str(n)] = list()
             for word, prob in topic:
-                topics[str(n)].append({'probability': prob, 'word': word})
+                topics[str(n)].append({'probability': float(prob), 'word': word})
         return topics
