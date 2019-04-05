@@ -44,12 +44,12 @@ class MainHandler(tornado.web.RequestHandler):
             self.analysis_executor.submit(transaction.run, analysis_id, self)
 
             for p in psutil.pids():
-                if psutil.Process(p).name() in ["python3.4", "java"]:
+                if psutil.Process(p).name() in ["python", "java"]:
                     for child in psutil.Process(p).children():
                         cdict = child.as_dict(attrs=['pid', 'name', 'status', 'ppid'])
                         print("\t" + str(cdict))
                         if cdict['status'] in ['sleeping', 'zombie'] and self.num_transactions_running == 0:
-                            print("There are no transactions running currently. Cleaning up idle java threads.")
+                            print("There are no transactions running currently. Cleaning up idle threads.")
                             child.kill()
 
         except TransactionException as err:
