@@ -35,9 +35,11 @@ class RemoveCapsPreserveNNP:
                         words.append(blob.words[word_count])
                     word_count += 1
                 else:
-                    words[len(words) - 1] = ''.join(
-                        [words[len(words) - 1], blob.tokens[token_count]])
+                    if words:
+                        words[-1] = ''.join([words[-1], blob.tokens[token_count]])
+                    else:
+                        words.append(blob.tokens[token_count])
                 token_count += 1
-            corpus.contents = (' '.join(words))
+            corpus.contents = ' '.join(words)
             results.append(corpus)
         return results
