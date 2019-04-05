@@ -8,4 +8,4 @@ SPLAT-library==0.4.4
 stanfordcorenlp==3.9.1.1
 TatSu==4.3.0
 textblob==0.15.3
-tornado==6.0.1
+tornado==6.0.2
