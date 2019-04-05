@@ -177,7 +177,7 @@ class TreeStringToList:
         prev_ids = [node['id'] for node in nodes]
         node_id = max(prev_ids) + 1 if prev_ids else head + 1
 
-        nodes.append({'id': node_id, 'tag': ast['pos'], 'head': head, 'value': ast['pos']})
+        nodes.append({'id': node_id, 'tag': '', 'head': head, 'value': ast['pos']})
 
         if isinstance(ast['value'], str):
             nodes.append({'id': node_id + 1, 'tag': '', 'head': node_id, 'value': ast['value']})
