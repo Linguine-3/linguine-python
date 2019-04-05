@@ -4,9 +4,6 @@ language: python
 python:
   - "3.7"
 
-env:
-  - BOTO_CONFIG="/dev/null"
-
 before_install:
   - wget -c "http://nlp.stanford.edu/software/stanford-corenlp-full-2018-10-05.zip"
 
