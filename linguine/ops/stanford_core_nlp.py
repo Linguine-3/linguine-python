@@ -55,7 +55,9 @@ class StanfordCoreNLP:
                 sentence = {'tokens': words}
 
                 if analysis_type == 'sentiment':
-                    sentence['sentiment'] = sentence_res['sentiment']
+                    # Add space after 'Very' for consistency and display
+                    sentence['sentiment'] = sentence_res['sentiment'].replace('Very', 'Very ')
+
                     sentence['sentimentValue'] = int(sentence_res['sentimentValue'])
                     sentence['tree_json'] = TreeStringToList.convert('sentiment', sentence_res['sentimentTree'])
 
