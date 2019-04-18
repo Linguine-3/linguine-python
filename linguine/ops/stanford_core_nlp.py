@@ -21,7 +21,7 @@ class StanfordCoreNLP:
                 'annotators': 'tokenize, ssplit, pos, lemma, ner, parse, sentiment, dcoref, relation, natlog, openie',
                 'pipelineLanguage': 'en',
                 'outputFormat': 'json',
-                'timeout': 60_000
+                'timeout': 300_000  # 5 minutes in milliseconds
             }
 
     def run(self, data):
