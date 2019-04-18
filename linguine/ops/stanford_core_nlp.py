@@ -20,7 +20,8 @@ class StanfordCoreNLP:
             StanfordCoreNLP.props = {
                 'annotators': 'tokenize, ssplit, pos, lemma, ner, parse, sentiment, dcoref, relation, natlog, openie',
                 'pipelineLanguage': 'en',
-                'outputFormat': 'json'
+                'outputFormat': 'json',
+                'timeout': 60_000
             }
 
     def run(self, data):
