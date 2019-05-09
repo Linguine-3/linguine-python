@@ -11,6 +11,7 @@ from linguine.ops.remove_quotes import RemoveQuotes
 from linguine.ops.remove_silent_pauses import RemoveSilence
 from linguine.ops.remove_stopwords import RemoveStopwords
 from linguine.ops.sentence_tokenize import SentenceTokenize
+from linguine.ops.speech_token_statistics import SpeechTokenStatistics
 from linguine.ops.splat import SplatComplexity, SplatDisfluency, SplatNGrams, SplatPOSFrequencies, SplatPronouns, \
     SplatSyllables
 from linguine.ops.stanford_core_nlp import StanfordCoreNLP
@@ -99,6 +100,8 @@ def get_operation_handler(operation):
         return UnsupervisedMorphology()
     elif operation == 'bigram-array':
         return BigramArray()
+    elif operation == 'speech-token-stats':
+        return SpeechTokenStatistics()
     elif operation == 'noop':
         return NoOp()
     else:
