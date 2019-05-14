@@ -12,7 +12,7 @@ before_install:
 
 install:
   - pip install -r requirements.txt
-  - python -m nltk.downloader stopwords names cmudict brown punkt averaged_perceptron_tagger maxent_treebank_pos_tagger wordnet
+  - python -m nltk.downloader averaged_perceptron_tagger brown cmudict names punkt stopwords wordnet
   - unzip stanford-corenlp-full-2018-10-05.zip -d ..
   - python -m gensim.downloader --download glove-wiki-gigaword-50
 
