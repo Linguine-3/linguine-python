@@ -1,5 +1,6 @@
 from linguine.ops.bigram_array import BigramArray
 from linguine.ops.char_ngrams import CharNgrams
+from linguine.ops.extract_transcript import ExtractTranscript
 from linguine.ops.lemmatize import LemmatizerWordNet
 from linguine.ops.length_statistics import LengthStatistics
 from linguine.ops.no_op import NoOp
@@ -102,7 +103,9 @@ def get_operation_handler(operation):
         return BigramArray()
     elif operation == 'speech-token-stats':
         return SpeechTokenStatistics()
+    elif operation == 'extract_transcript':
+        return ExtractTranscript()
     elif operation == 'noop':
         return NoOp()
     else:
-        raise TransactionException("The requested operation does not exist.")
+        raise TransactionException(f'The requested operation "{operation}" does not exist.')
