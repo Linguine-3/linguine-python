@@ -2,6 +2,7 @@ import unittest
 
 from linguine.corpus import Corpus
 from linguine.ops.speech_token_statistics import SpeechTokenStatistics
+from test.test_utils import round_json_floats
 
 
 class SpeechTokenStatisticsTest(unittest.TestCase):
@@ -21,13 +22,15 @@ class SpeechTokenStatisticsTest(unittest.TestCase):
                              '{"start":1490,"filler":true,"end":1600,"word":"<sil>"}]'
         test_data = [Corpus('0', '', test_data_contents)]
         results = self.op.run(test_data)
-        desired_results = [{'transcript': 'i know i just as <sil> you this <sil>',
+        desired_results = [{'transcript': 'i know i just as [SIL] you this [SIL]',
                             'base_stats': {'num_fillers': 2,
                                            'num_words': 7,
                                            'filler_time': 0.13,
                                            'word_time': 1.22,
                                            'total_time': 1.6,
-                                           'words_per_minute': 262.5},
+                                           'words_per_minute': 262.5,
+                                           'syllables_per_minute': 225.0
+                                           },
                             'longest_tokens': [{'word': 'know', 'length': 0.26},
                                                {'word': 'just', 'length': 0.25},
                                                {'word': 'this', 'length': 0.24},
@@ -35,7 +38,7 @@ class SpeechTokenStatisticsTest(unittest.TestCase):
                                                {'word': 'i', 'length': 0.1},
                                                {'word': 'i', 'length': 0.08},
                                                {'word': 'you', 'length': 0.08}]}]
-        self.assertEqual(results, desired_results)
+        self.assertEqual(round_json_floats(results), round_json_floats(desired_results))
 
 
 if __name__ == '__main__':
