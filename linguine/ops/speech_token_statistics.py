@@ -1,8 +1,7 @@
 import json
 from operator import itemgetter
 
-from linguine.corpus import Corpus
-from linguine.ops.splat import SplatSyllables
+import splat.complexity
 
 
 class SpeechTokenStatistics:
@@ -27,9 +26,8 @@ class SpeechTokenStatistics:
             total_time = tokens[-1]['end'] / 1000
             words_per_minute = num_words / (total_time / 60)
 
-            words_as_corpus = Corpus('0', '', ' '.join(token['word'] for token in word_tokens))
-            splat_syllable_output = json.loads(SplatSyllables().run([words_as_corpus]))[0]['syllables']
-            num_syllables = sum(int(count) * len(examples) for count, examples in splat_syllable_output.items())
+            word_token_text = [token['word'] for token in word_tokens]
+            num_syllables = splat.complexity.num_syllables(word_token_text)
             syllables_per_minute = num_syllables / (total_time / 60)
 
             longest_tokens = list(map(lambda tok: {'word': tok['word'], 'length': tok['length'] / 1000},
