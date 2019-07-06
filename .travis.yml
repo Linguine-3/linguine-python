@@ -17,6 +17,9 @@ install:
   - python -m gensim.downloader --download glove-wiki-gigaword-50
 
 script:
+  - cd ../stanford-corenlp-full-2018-10-05.zip -d
+  - nohup java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000 &
+  - cd ../linguine-python
   - travis_wait nosetests
 
 services:

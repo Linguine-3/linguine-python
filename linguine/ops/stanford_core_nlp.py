@@ -10,19 +10,17 @@ from tatsu import parse
 
 
 class StanfordCoreNLP:
-    proc = None
 
     def __init__(self, analysis_type):
         self.analysis_type = analysis_type
 
-        if StanfordCoreNLP.proc is None:
-            StanfordCoreNLP.proc = CoreNLP('../stanford-corenlp-full-2018-10-05', quiet=False)
-            StanfordCoreNLP.props = {
-                'annotators': 'tokenize, ssplit, pos, lemma, ner, parse, sentiment, dcoref, relation, natlog, openie',
-                'pipelineLanguage': 'en',
-                'outputFormat': 'json',
-                'timeout': 300_000  # 5 minutes in milliseconds
-            }
+        self.proc = CoreNLP('http://localhost', port=9000)
+        self.props = {
+            'annotators': 'tokenize, ssplit, pos, lemma, ner, parse, sentiment, dcoref, relation, natlog, openie',
+            'pipelineLanguage': 'en',
+            'outputFormat': 'json',
+            'timeout': 300_000  # 5 minutes in milliseconds
+        }
 
     def run(self, data):
         result = self.json_cleanup(data, self.analysis_type)
@@ -39,7 +37,7 @@ class StanfordCoreNLP:
         part of speech tags
         """
         for corpus in data:
-            res = StanfordCoreNLP.proc.annotate(corpus.contents, properties=StanfordCoreNLP.props)
+            res = self.proc.annotate(corpus.contents, properties=self.props)
             res = json.loads(res)
             # print(res)
             sentences = []
