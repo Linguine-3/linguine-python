@@ -4,20 +4,19 @@ Author: Alex Hedges
 
 import argparse
 import bz2
+import json
 import os
 import re
 import xml.etree.ElementTree as ET
 from io import StringIO
-from os.path import basename
 from os.path import splitext
 from urllib import request
 from urllib.parse import urljoin
 
-from bs4 import BeautifulSoup
 from gensim.corpora import wikicorpus
 
 
-def find_articles_links(base_url: str) -> list:
+def find_articles_links(wiki_name: str, dump_date: str) -> dict:
     """Creates a list of article files to download.
 
     Args:
@@ -27,14 +26,18 @@ def find_articles_links(base_url: str) -> list:
         A list of file names to download.
 
     """
-    html = request.urlopen(base_url).read().decode('utf8')  # Download HTML
-    soup = BeautifulSoup(html, 'lxml')  # Parse HTML
-    all_links = []
-    for link in soup.find_all('a'):
-        all_links.append(link.get('href'))
-    file_regex = re.compile(r'^vowiki-latest-pages-articles\.xml\.bz2$')
-    articles_links = [link for link in all_links if file_regex.match(link)]
-    return articles_links
+    dump_status_url = f'https://dumps.wikimedia.org/{wiki_name}/{dump_date}/dumpstatus.json'
+    base_file_url = 'https://dumps.wikimedia.org/'
+
+    page_text = request.urlopen(dump_status_url).read().decode('utf8')
+    page = json.loads(page_text)
+    files = page['jobs']['articlesdump']['files']
+
+    all_links = {}
+    for file, data in files.items():
+        all_links[file] = urljoin(base_file_url, data['url'])
+
+    return all_links
 
 
 def remove_namespace(xml_string: str) -> ET.Element:
@@ -60,7 +63,7 @@ def remove_namespace(xml_string: str) -> ET.Element:
 def get_page_buffered(link: str) -> ET.Element:
     # Memory-saving trick found at http://enginerds.craftsy.com/blog/2014/04/parsing-large-xml-files-in-python-without-a-billion-gigs-of-ram.html
     input_buffer = ''
-    with open(link + '.xml', 'r') as in_file:
+    with open(link, 'r') as in_file:
         append = False
         for line in in_file:
             if '<page>' in line:
@@ -69,17 +72,15 @@ def get_page_buffered(link: str) -> ET.Element:
             elif '</page>' in line:
                 input_buffer += line
                 append = False
-                # print(input_buffer)
                 page = remove_namespace(input_buffer)
                 yield page
                 input_buffer = None
-                del input_buffer  # Probably redundant
             elif append:
                 input_buffer += line
 
 
 def get_page_parsed(link: str) -> ET.Element:
-    xml_text = open(link + '.xml', encoding='utf8').read()
+    xml_text = open(link, encoding='utf8').read()
     xml_root = remove_namespace(xml_text)
     for page in xml_root.iter('page'):
         yield page
@@ -88,6 +89,9 @@ def get_page_parsed(link: str) -> ET.Element:
 def main():
     """Extracts the text of pages on Wikipedia."""
     parser = argparse.ArgumentParser(description='Extracts text of animal pages on Wikipedia.')
+    parser.add_argument('wiki_name', help='')
+    parser.add_argument('dump_date', help='')
+    parser.add_argument('out_file_name', help='')
     parser.add_argument('-r', action='store_true',
                         help='Redownload and reextract all files', dest='redownload')
     parser.add_argument('-t', action='store_true',
@@ -97,48 +101,51 @@ def main():
     parser.add_argument('-b', action='store_true',
                         help='Loads XML file into a buffer instead of parsing entire file', dest='buffer_input')
     args = vars(parser.parse_args())
+    wiki_name = args['wiki_name']
+    dump_date = args['dump_date']
+    out_file_name = args['out_file_name']
     redownload = args['redownload']
     test_mode = args['test_mode']
     skip_download = args['skip_download']
     buffer_input = args['buffer_input']
-    base_url = 'https://dumps.wikimedia.org/vowiki/latest/'
-    articles_links = find_articles_links(base_url)
-    articles_links = [splitext(basename(link))[0] for link in articles_links]
+
+    articles_links = find_articles_links(wiki_name, dump_date)
+
     if not skip_download:
-        for link in articles_links:
-            if not os.path.isfile(link + '.bz2') or redownload:
-                print('Downloading {} now...'.format(link + '.bz2'), flush=True)
-                downloaded_file = request.urlopen(urljoin(base_url, link + '.bz2')).read()
-                with bz2.open(link + '.bz2', 'w') as compressed_file:
+        for file_name, file_url in articles_links.items():
+            if not os.path.isfile(file_name) or redownload:
+                print(f'Downloading {file_name} now...')
+                downloaded_file = request.urlopen(file_url).read()
+                with bz2.open(file_name, 'w') as compressed_file:
                     compressed_file.write(downloaded_file)
             if test_mode:
                 break
-    for link in articles_links:
-        if skip_download and not os.path.isfile(link + '.bz2'):
+    for file_name in articles_links:
+        if skip_download and not os.path.isfile(file_name):
             continue
-        if not os.path.isfile(link + '.xml') or redownload:
-            print('Extracting {} now...'.format(link + '.xml'), flush=True)
-            with bz2.open(link + '.bz2', 'r') as compressed_file:
+        if not os.path.isfile(splitext(file_name)[0]) or redownload:
+            print(f'Extracting {splitext(file_name)[0]} now...')
+            with bz2.open(file_name, 'r') as compressed_file:
                 compressed_file = compressed_file.read()
             decompressed_file = bz2.decompress(compressed_file).decode('utf8')
-            with open(link + '.xml', 'w', encoding='utf8') as xml_file:
+            with open(splitext(file_name)[0], 'w', encoding='utf8') as xml_file:
                 xml_file.write(decompressed_file)
         if test_mode:
             break
-    out_file_name = 'vowiki.txt'
+
     pages_saved = 0
     with open(out_file_name, 'w') as out_file:
         for link in articles_links:
-            if skip_download and not os.path.isfile(link + '.xml'):
+            if skip_download and not os.path.isfile(splitext(file_name)[0]):
                 continue
-            print('Processing {} now...'.format(link + '.xml'), flush=True)
+            print(f'Processing {splitext(file_name)[0]} now...')
 
             if buffer_input:
                 page_gen = get_page_buffered
             else:
                 page_gen = get_page_parsed
 
-            for page in page_gen(link):
+            for page in page_gen(splitext(file_name)[0]):
                 if page.find('ns').text == '0':
                     text = page.find('revision').find('text').text
                     text = wikicorpus.filter_wiki(text)
@@ -148,7 +155,7 @@ def main():
             if test_mode:
                 break
 
-    print('Stored {} pages in {}'.format(pages_saved, out_file_name))
+    print(f'Stored {pages_saved} pages in {out_file_name}')
 
 
 if __name__ == '__main__':
