@@ -71,7 +71,7 @@ class FooOp:
 
 ## Dependencies
 
-* Python 3.4 or newer (Requires implementation of Future object)
+* Python 3.9.1 or newer (Requires implementation of Future object)
 * MongoDB
 * [NLTK Punkt model](https://stackoverflow.com/questions/4867197/failed-loading-english-pickle-with-nltk-data-load)
 * Stanford CoreNLP Pywrapper (Installation instructions can be found [here](https://github.com/ritlinguine/linguine/wiki/Stanford-CoreNLP-Installation)). 
@@ -86,6 +86,6 @@ class FooOp:
 To run tests:
 
 1. `sudo pip install -r requirements.txt`
-2. `nosetests` #Requires 'nose' to work properly. Check out https://nose.readthedocs.io/en/latest/ if it's not working for you
+2. `pytest test`
 
 Note: running the program from a directory other than the linguine-python root directory will cause directory linking errors.
