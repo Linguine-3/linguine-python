@@ -22,8 +22,10 @@ class TopicModel:
     def run(self, data):
         corpora = []
         for corpus in data:
+            corpus = corpus.contents.splitlines()
+            corpus = "\n".join(corpus).split('\n\n')
             sentences = [Corpus(str(i), "", sentence.strip()) for i, sentence in
-                         enumerate(corpus.contents.splitlines()) if sentence]
+                         enumerate(corpus) if sentence]
             corpora += sentences
 
         print('Num corpora = {}'.format(len(corpora)))
