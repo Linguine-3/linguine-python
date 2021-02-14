@@ -122,7 +122,7 @@ class Transaction:
                analysis_id - unique identifier of this Transaction
         """
         try:
-            start = time.clock()
+            start = time.process_time()
             corpora = self.corpora
             if self.tokenizer is not None and not self.tokenizer == '':
                 op_handler = linguine.operation_builder \
@@ -146,7 +146,7 @@ class Transaction:
             self.write_result(op_handler.run(corpora), str(analysis_id))
 
             # write transaction time to console
-            print(self.analysis_name, ',', (time.clock() - start) * 1000)
+            print(self.analysis_name, ',', (time.process_time() - start) * 1000)
             # Subtract one from analysis running count now that we're complete
             main_handler.num_transactions_running -= 1
 

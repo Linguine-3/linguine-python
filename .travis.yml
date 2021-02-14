@@ -4,7 +4,7 @@ dist: xenial
 
 language: python
 python:
-  - "3.7.3"
+  - "3.9.1"
 
 env:
   - BOTO_CONFIG="/dev/null"
@@ -22,7 +22,7 @@ install:
   - cd ../linguine-python
 
 script:
-  - travis_wait nosetests
+  - travis_wait pytest
 
 services:
   - mongodb

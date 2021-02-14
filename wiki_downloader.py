@@ -63,7 +63,7 @@ def remove_namespace(xml_string: str) -> ET.Element:
 def get_page_buffered(link: str) -> ET.Element:
     # Memory-saving trick found at http://enginerds.craftsy.com/blog/2014/04/parsing-large-xml-files-in-python-without-a-billion-gigs-of-ram.html
     input_buffer = ''
-    with open(link, 'r') as in_file:
+    with open(link, 'r', encoding='utf-8') as in_file:
         append = False
         for line in in_file:
             if '<page>' in line:
@@ -134,7 +134,7 @@ def main():
             break
 
     pages_saved = 0
-    with open(out_file_name, 'w') as out_file:
+    with open(out_file_name, 'w', encoding='utf-8') as out_file:
         for link in articles_links:
             if skip_download and not os.path.isfile(splitext(file_name)[0]):
                 continue
