@@ -72,6 +72,7 @@ class StanfordCoreNLP:
 
                 if analysis_type == 'relation':
                     relations = []
+                    predicates = dict()
                     for relation in sentence_res['openie']:
                         new_relation = {
                             'subject': {
@@ -90,7 +91,22 @@ class StanfordCoreNLP:
                                 'end': relation['objectSpan'][1]
                             },
                         }
-                        relations.append(new_relation)
+                        # Find the relation with longest arguments on left and right hand side
+                        if relation['relation'] in predicates:
+                            curr_relation = predicates[relation['relation']]
+                            curr_length = (curr_relation['subject']['end'] - curr_relation['subject']['start']) + \
+                                          (curr_relation['object']['end'] - curr_relation['object']['start'])
+
+                            new_length = (new_relation['subject']['end'] - new_relation['subject']['start']) + \
+                                         (new_relation['object']['end'] - new_relation['object']['start'])
+
+                            if new_length > curr_length:
+                                predicates[relation['relation']] = new_relation
+                        else:
+                            predicates[relation['relation']] = new_relation
+
+                    for pred in predicates.values():
+                        relations.append(pred)
 
                     sentence['relations'] = relations
 
