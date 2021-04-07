@@ -93,19 +93,19 @@ class StanfordCoreNLPTest(unittest.TestCase):
                               {'id': 5, 'tag': 2, 'head': 2, 'value': '@NP'},
                               {'id': 6, 'tag': 2, 'head': 5, 'value': 'JJ'},
                               {'id': 7, 'tag': '', 'head': 6, 'value': 'quick'},
-                              {'id': 8, 'tag': 2, 'head': 5, 'value': '@NP'},
+                              {'id': 8, 'tag': 3, 'head': 5, 'value': '@NP'},
                               {'id': 9, 'tag': 2, 'head': 8, 'value': 'JJ'},
                               {'id': 10, 'tag': '', 'head': 9, 'value': 'brown'},
                               {'id': 11, 'tag': 2, 'head': 8, 'value': 'NN'},
                               {'id': 12, 'tag': '', 'head': 11, 'value': 'fox'},
                               {'id': 13, 'tag': 1, 'head': 1, 'value': '@S'},
-                              {'id': 14, 'tag': 2, 'head': 13, 'value': 'VP'},
+                              {'id': 14, 'tag': 1, 'head': 13, 'value': 'VP'},
                               {'id': 15, 'tag': 2, 'head': 14, 'value': 'VBD'},
                               {'id': 16, 'tag': '', 'head': 15, 'value': 'jumped'},
-                              {'id': 17, 'tag': 2, 'head': 14, 'value': 'PP'},
+                              {'id': 17, 'tag': 1, 'head': 14, 'value': 'PP'},
                               {'id': 18, 'tag': 2, 'head': 17, 'value': 'IN'},
                               {'id': 19, 'tag': '', 'head': 18, 'value': 'over'},
-                              {'id': 20, 'tag': 2, 'head': 17, 'value': 'NP'},
+                              {'id': 20, 'tag': 1, 'head': 17, 'value': 'NP'},
                               {'id': 21, 'tag': 2, 'head': 20, 'value': 'DT'},
                               {'id': 22, 'tag': '', 'head': 21, 'value': 'the'},
                               {'id': 23, 'tag': 1, 'head': 20, 'value': '@NP'},
@@ -149,6 +149,7 @@ class StanfordCoreNLPTest(unittest.TestCase):
     def test_run_relation(self):
         self.op.analysis_type = 'relation'
         results = self.op.run(self.test_data)
+        print(results)
         desired_results = {
             'sentences': [{
                 'tokens': [{'token': 'The'},
@@ -164,27 +165,6 @@ class StanfordCoreNLPTest(unittest.TestCase):
                 'parse': '(ROOT (S (NP (DT The) (JJ quick) (JJ brown) (NN fox)) (VP (VBD jumped) (PP (IN over) (NP (DT the) (JJ lazy) (NN dog)))) (. .)))',
                 'relations': [
                     {'subject': {'lemma': 'quick brown fox', 'start': 1, 'end': 4},
-                     'relation': {'lemma': 'jumped over', 'start': 4, 'end': 6},
-                     'object': {'lemma': 'lazy dog', 'start': 7, 'end': 9}},
-                    {'subject': {'lemma': 'fox', 'start': 3, 'end': 4},
-                     'relation': {'lemma': 'jumped over', 'start': 4, 'end': 6},
-                     'object': {'lemma': 'dog', 'start': 8, 'end': 9}},
-                    {'subject': {'lemma': 'quick fox', 'start': 1, 'end': 4},
-                     'relation': {'lemma': 'jumped over', 'start': 4, 'end': 6},
-                     'object': {'lemma': 'dog', 'start': 8, 'end': 9}},
-                    {'subject': {'lemma': 'quick brown fox', 'start': 1, 'end': 4},
-                     'relation': {'lemma': 'jumped over', 'start': 4, 'end': 6},
-                     'object': {'lemma': 'dog', 'start': 8, 'end': 9}},
-                    {'subject': {'lemma': 'brown fox', 'start': 2, 'end': 4},
-                     'relation': {'lemma': 'jumped over', 'start': 4, 'end': 6},
-                     'object': {'lemma': 'lazy dog', 'start': 7, 'end': 9}},
-                    {'subject': {'lemma': 'brown fox', 'start': 2, 'end': 4},
-                     'relation': {'lemma': 'jumped over', 'start': 4, 'end': 6},
-                     'object': {'lemma': 'dog', 'start': 8, 'end': 9}},
-                    {'subject': {'lemma': 'quick fox', 'start': 1, 'end': 4},
-                     'relation': {'lemma': 'jumped over', 'start': 4, 'end': 6},
-                     'object': {'lemma': 'lazy dog', 'start': 7, 'end': 9}},
-                    {'subject': {'lemma': 'fox', 'start': 3, 'end': 4},
                      'relation': {'lemma': 'jumped over', 'start': 4, 'end': 6},
                      'object': {'lemma': 'lazy dog', 'start': 7, 'end': 9}}]
             }]}
