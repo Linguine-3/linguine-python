@@ -6,6 +6,7 @@ import os
 import traceback
 from concurrent.futures import ThreadPoolExecutor
 
+import argparse
 import psutil
 import tornado.ioloop
 import tornado.web
@@ -24,11 +25,14 @@ class MainHandler(tornado.web.RequestHandler):
     print("starting thread pool with " + str(max_thread_pool_workers) + " threads.")
     analysis_executor = ThreadPoolExecutor(max_workers=max_thread_pool_workers)
 
+    def initialize(self, database):
+        self.database = database
+
     def post(self):
         self.set_header('Content-Type', 'application/json')
         try:
             self.num_transactions_running += 1
-            transaction = Transaction()
+            transaction = Transaction(self.database)
             self.transactions.append(transaction)
             transaction.parse_json(self.request.body)
             transaction.read_corpora()
@@ -73,9 +77,25 @@ class MainHandler(tornado.web.RequestHandler):
 
 
 def main():
+    if 'NODE_ENV' in os.environ:
+        # Look for Node environment to determine db name.
+        db = 'linguine-' + os.environ['NODE_ENV']
+    else:
+        # NODE_ENV not found, default to development
+        db = 'linguine-development'
+
+    parser = argparse.ArgumentParser()
+
+    # Defaults are set for Linguine 1
+    parser.add_argument("--port", type=int, default=5555)
+    parser.add_argument("--database", type=str, default=db)
+    args = parser.parse_args()
+
+    print(f"Using database: {args.database}")
+    print(f"Starting server on {args.port}")
     try:
-        application = tornado.web.Application([(r"/", MainHandler)])
-        application.listen(5555)
+        application = tornado.web.Application([(r"/", MainHandler, dict(database=args.database))])
+        application.listen(args.port)
         tornado.ioloop.IOLoop.current().start()
     except KeyboardInterrupt:
         pass

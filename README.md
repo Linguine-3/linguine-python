@@ -81,7 +81,11 @@ class FooOp:
 1. Install Stanford CoreNLP module following docs [here](https://github.com/ritlinguine/linguine/wiki/Stanford-CoreNLP-Installation). 
 2. `sudo pip install -r requirements.txt`
 3. `python -m textblob.download_corpora`
-4. `python -m linguine.webserver`
+4. `python -m linguine.webserver --port <port> --database <database>`
+
+**Note**:
+* For Linguine 1: port: `5555`, database: `linguine-development`
+* For Linguine 2: port: `5551`, database: `linguine2-development`
 
 To run tests:
 

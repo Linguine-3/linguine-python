@@ -12,7 +12,7 @@ from linguine.transaction_exception import TransactionException
 
 
 class Transaction:
-    def __init__(self):
+    def __init__(self, database):
         self.transaction_id = -1
         self.eta = None
         self.library = None
@@ -29,12 +29,13 @@ class Transaction:
                                        'stem_porter', 'stem_lancaster',
                                        'stem_snowball', 'lemmatize_wordnet']
         self.is_finished = False
+        self.databaseAdapter = DatabaseAdapter(database)
 
     def read_corpora(self):
         """Read in all corpora that are specified for a given transaction"""
         try:
             # load corpora from database
-            corpora = DatabaseAdapter.get_db().corpus
+            corpora = self.databaseAdapter.get_db().corpus
             for corpus_id in self.corpora_ids:
                 corpus = corpora.find_one({"_id": ObjectId(corpus_id)})
                 self.corpora.append(Corpus(corpus_id, corpus["title"],
@@ -57,18 +58,18 @@ class Transaction:
                     'complete': False,
                     'time_created': self.time_created,
                     'analysis': self.operation}
-        return DatabaseAdapter.get_db().analyses.insert_one(analysis).inserted_id
+        return self.databaseAdapter.get_db().analyses.insert_one(analysis).inserted_id
 
     def write_result(self, result, analysis_id):
         """Write result object to DB"""
-        analysis = DatabaseAdapter.get_db().analyses.find_one({"_id": ObjectId(analysis_id)})
+        analysis = self.databaseAdapter.get_db().analyses.find_one({"_id": ObjectId(analysis_id)})
 
         analysis['complete'] = True
         analysis['result'] = result
 
         print("Analysis " + str(analysis_id) + " complete. submitting record to DB")
 
-        DatabaseAdapter.get_db().analyses.update_one({'_id': ObjectId(analysis_id)}, {'$set': analysis})
+        self.databaseAdapter.get_db().analyses.update_one({'_id': ObjectId(analysis_id)}, {'$set': analysis})
         self.is_finished = True
 
     def parse_json(self, json_data):
