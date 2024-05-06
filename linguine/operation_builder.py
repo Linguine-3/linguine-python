@@ -24,9 +24,10 @@ from linguine.ops.word_cloud_op import WordCloudOp
 from linguine.ops.word_tokenize import WordTokenizeStanford, WordTokenizeTreebank, WordTokenizeWhitespacePunct
 from linguine.ops.word_vector import WordVector
 from linguine.transaction_exception import TransactionException
+from linguine.ops.named_entity_recognition import NamedEntityRecognition
 
-
-def get_operation_handler(operation):
+def get_operation_handler(operation,model=None,user = None):
+    
     if operation == 'lemmatize_wordnet':
         return LemmatizerWordNet()
     elif operation == 'removecapsgreedy':
@@ -61,8 +62,11 @@ def get_operation_handler(operation):
         return WordTokenizeStanford()
     elif operation == 'nlp-pos':
         return StanfordCoreNLP('pos')
+    elif operation == 'nlp-ner' and model!=None:
+        return NamedEntityRecognition(model,user)
     elif operation == 'nlp-ner':
         return StanfordCoreNLP('ner')
+    
     elif operation == 'nlp-sentiment':
         return StanfordCoreNLP('sentiment')
     elif operation == 'nlp-coref':
