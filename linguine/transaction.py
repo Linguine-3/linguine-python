@@ -86,7 +86,7 @@ class Transaction:
             self.library = input_data['library']
             self.analysis_name = input_data['analysis_name']
             self.time_created = input_data['time_created']
-            self.model_id = input_data['model_id']['id']
+            self.model_id = input_data['model_id']['id'] if 'model_id' in input_data else None
             if 'user_id' in input_data.keys():
                 self.user_id = input_data['user_id']
             if 'cleanup' in input_data.keys():
@@ -146,7 +146,7 @@ class Transaction:
 
             print("Performing core operation for analysis " + str(analysis_id) + " with op " + str(op_handler))
             self.write_result(op_handler.run(corpora), str(analysis_id))
-
+            
             # write transaction time to console
             print(self.analysis_name, ',', (time.process_time() - start) * 1000)
             # Subtract one from analysis running count now that we're complete
