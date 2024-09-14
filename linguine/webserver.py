@@ -79,15 +79,15 @@ class MainHandler(tornado.web.RequestHandler):
 def main():
     if 'NODE_ENV' in os.environ:
         # Look for Node environment to determine db name.
-        db = 'linguine-' + os.environ['NODE_ENV']
+        db = 'linguine2' + os.environ['NODE_ENV']
     else:
         # NODE_ENV not found, default to development
-        db = 'linguine-development'
+        db = 'linguine2-development'
 
     parser = argparse.ArgumentParser()
 
     # Defaults are set for Linguine 1
-    parser.add_argument("--port", type=int, default=5555)
+    parser.add_argument("--port", type=int, default=5551)
     parser.add_argument("--database", type=str, default=db)
     args = parser.parse_args()
 
